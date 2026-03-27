@@ -5,6 +5,7 @@ it('uses the pricing hero illustration asset in the landing component', function
 
     expect($component)
         ->toContain('src="/images/landing/hero-paket-harga.png"')
-        ->toContain('class="absolute bottom-0 left-1/2 z-[3] w-[min(430px,82%)] -translate-x-1/2"')
+        ->toContain('bottom-[-36px]')
+        ->toContain('[mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]')
         ->not->toContain('src="/images/landing/hero-person.svg"');
 });

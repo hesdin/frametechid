@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { CheckCircle2, CirclePlay, X } from 'lucide-vue-next';
+import {
+    CheckCircle2,
+    Facebook,
+    Instagram,
+    Linkedin,
+    Play,
+    X,
+} from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const defaultPoints = [
@@ -89,7 +96,7 @@ onBeforeUnmount(() => {
                 <img
                     :src="imageSrc"
                     :alt="imageAlt"
-                    class="mx-auto h-full min-h-[480px] w-[74%] object-contain object-bottom"
+                    class="mx-auto h-full min-h-[420px] w-[60%] pt-10 object-contain object-bottom"
                 />
 
                 <button
@@ -101,33 +108,56 @@ onBeforeUnmount(() => {
                     aria-label="Putar video"
                     @click="openModal"
                 >
-                    <CirclePlay :size="44" fill="currentColor" />
+                    <span
+                        :class="[
+                            'grid h-[58px] w-[58px] place-items-center rounded-full shadow-[inset_0_2px_0_rgba(255,255,255,0.28)]',
+                            isBrandTheme
+                                ? 'bg-gradient-to-b from-[#f0a70f] to-[#dc8d00] text-white'
+                                : isRedTheme
+                                  ? 'bg-gradient-to-b from-[#f06f6f] to-[#d44242] text-white'
+                                  : 'bg-gradient-to-b from-[#1cb1fb] to-[#0f8edf] text-white',
+                        ]"
+                    >
+                        <Play :size="22" fill="currentColor" class="ml-1" />
+                    </span>
                 </button>
 
                 <span
-                    class="absolute top-6 left-6 grid h-[70px] w-[70px] place-items-center rounded-full bg-white/80 text-4xl"
+                    :class="[
+                        'absolute top-6 left-6 grid h-[64px] w-[64px] place-items-center rounded-full bg-white/88 shadow-[0_10px_20px_rgba(31,78,118,0.12)]',
+                        isBrandTheme
+                            ? 'text-[#de8a00]'
+                            : isRedTheme
+                              ? 'text-[#d65858]'
+                              : 'text-[#4d98df]',
+                    ]"
                 >
-                    🇺🇸
+                    <Instagram :size="28" />
                 </span>
                 <span
-                    class="absolute top-1/2 right-7 grid h-[70px] w-[70px] -translate-y-1/2 place-items-center rounded-full bg-white/80 text-4xl"
+                    :class="[
+                        'absolute top-1/2 right-7 grid h-[64px] w-[64px] -translate-y-1/2 place-items-center rounded-full bg-white/88 shadow-[0_10px_20px_rgba(31,78,118,0.12)]',
+                        isBrandTheme
+                            ? 'text-[#de8a00]'
+                            : isRedTheme
+                              ? 'text-[#d65858]'
+                              : 'text-[#4d98df]',
+                    ]"
                 >
-                    🇫🇷
+                    <Linkedin :size="24" />
                 </span>
                 <span
-                    class="absolute bottom-6 left-6 grid h-[70px] w-[70px] place-items-center rounded-full bg-white/80 text-4xl"
+                    :class="[
+                        'absolute bottom-6 left-6 grid h-[64px] w-[64px] place-items-center rounded-full bg-white/88 shadow-[0_10px_20px_rgba(31,78,118,0.12)]',
+                        isBrandTheme
+                            ? 'text-[#de8a00]'
+                            : isRedTheme
+                              ? 'text-[#d65858]'
+                              : 'text-[#4d98df]',
+                    ]"
                 >
-                    🇦🇺
+                    <Facebook :size="28" />
                 </span>
-
-                <div
-                    class="absolute right-8 bottom-8 rounded-xl border border-white/70 bg-white/85 px-6 py-4 shadow-[0_10px_18px_rgba(31,78,118,0.15)]"
-                >
-                    <p class="text-[16px] text-[#5c6a84]">{{ profileName }}</p>
-                    <p class="mt-1 text-[16px] font-semibold text-[#242a43]">
-                        {{ profileRole }}
-                    </p>
-                </div>
             </article>
 
             <div>

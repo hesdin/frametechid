@@ -46,68 +46,41 @@ const testimonials = [
 </script>
 
 <template>
-    <section
-        :id="props.sectionId"
-        :class="[props.backgroundClass, 'py-24 md:py-28']"
-    >
+    <section :id="props.sectionId" :class="[props.backgroundClass, 'py-24 md:py-28']">
         <div
-            class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]"
-        >
+            class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]">
             <div class="mx-auto max-w-[1080px] text-center">
-                <h2
-                    class="text-[18px] leading-tight font-bold tracking-[-0.02em] text-[#272a45] md:text-[30px]"
-                >
+                <h2 class="text-[18px] leading-tight font-bold tracking-[-0.02em] text-[#272a45] md:text-[30px]">
                     {{ props.title }}
                 </h2>
-                <p
-                    class="mx-auto mt-5 max-w-[820px] text-[15px] leading-[1.7] text-[#6d7390] md:text-[16px]"
-                >
+                <p class="mx-auto mt-5 max-w-[820px] text-[15px] leading-[1.7] text-[#6d7390] md:text-[16px]">
                     {{ props.description }}
                 </p>
             </div>
 
             <div class="mt-12 grid gap-6 lg:grid-cols-3">
-                <article
-                    v-for="item in testimonials"
-                    :key="item.name"
-                    :class="[
-                        'rounded-[26px] bg-white px-8 py-9',
-                        isBrandTheme
-                            ? 'border border-[#dce8f4] shadow-[0_14px_26px_rgba(31,91,143,0.08)]'
-                            : 'border border-[#ececf1]',
-                    ]"
-                >
-                    <Quote
-                        :size="26"
-                        :stroke-width="1.8"
-                        :class="
-                            isBrandTheme
-                                ? 'text-[#de8a00]'
-                                : isRedTheme
-                                  ? 'text-[#d85b5b]'
-                                  : 'text-[#4e99df]'
-                        "
-                    />
-                    <p
-                        class="mt-5 text-[14px] leading-[1.75] text-[#3b4159] md:text-[15px]"
-                    >
+                <article v-for="item in testimonials" :key="item.name" :class="[
+                    'rounded-[26px] bg-white px-8 py-9',
+                    isBrandTheme
+                        ? 'border border-[#dce8f4]'
+                        : 'border border-[#ececf1]',
+                ]">
+                    <Quote :size="26" :stroke-width="1.8" :class="isBrandTheme
+                            ? 'text-[#de8a00]'
+                            : isRedTheme
+                                ? 'text-[#d85b5b]'
+                                : 'text-[#4e99df]'
+                        " />
+                    <p class="mt-5 text-[14px] leading-[1.75] text-[#3b4159] md:text-[15px]">
                         {{ item.quote }}
                     </p>
                     <div class="mt-8 flex items-center gap-4">
-                        <img
-                            :src="item.avatar"
-                            :alt="item.name"
-                            class="h-[56px] w-[56px] rounded-full object-cover"
-                        />
+                        <img :src="item.avatar" :alt="item.name" class="h-[56px] w-[56px] rounded-full object-cover" />
                         <span>
-                            <strong
-                                class="block text-[18px] leading-tight font-semibold text-[#2a2e49]"
-                                >{{ item.name }}</strong
-                            >
-                            <span
-                                class="mt-2 block text-[14px] leading-tight text-[#6f7690] md:text-[15px]"
-                                >{{ item.role }}</span
-                            >
+                            <strong class="block text-[18px] leading-tight font-semibold text-[#2a2e49]">{{ item.name
+                                }}</strong>
+                            <span class="mt-2 block text-[14px] leading-tight text-[#6f7690] md:text-[15px]">{{
+                                item.role }}</span>
                         </span>
                     </div>
                 </article>

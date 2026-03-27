@@ -18,10 +18,15 @@ it('renders the landing page with the frametech brand theme', function (): void 
     expect($heroComponent)
         ->toContain('bg-[linear-gradient(180deg,#f4f9fd_0%,#edf6fd_60%,#fff5e3_100%)]')
         ->toContain('from-[#eda40f] to-[#d98700]')
-        ->toContain('from-[#2c87c9] to-[#176aaf]');
+        ->toContain('from-[#2c87c9] to-[#176aaf]')
+        ->toContain('bottom-[-44px]')
+        ->toContain('[mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]');
 
     expect($navbarComponent)
         ->toContain("theme?: 'blue' | 'red' | 'brand';")
         ->toContain('src="/images/landing/logo-frametech.png"')
-        ->toContain("isBrandTheme = computed(() => props.theme === 'brand')");
+        ->toContain("isBrandTheme = computed(() => props.theme === 'brand')")
+        ->toContain('const isMobileMenuOpen = ref(false);')
+        ->toContain('aria-label="Toggle navigation menu"')
+        ->toContain('id="landing-mobile-menu"');
 });

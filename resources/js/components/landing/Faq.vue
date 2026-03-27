@@ -50,55 +50,34 @@ const faqs = [
 </script>
 
 <template>
-    <section
-        :id="sectionId"
-        class="bg-[linear-gradient(180deg,#ffffff_0%,#f5f9fd_100%)] py-20 md:py-24"
-    >
+    <section :id="sectionId" class="bg-[linear-gradient(180deg,#ffffff_0%,#f5f9fd_100%)] py-20 md:py-24">
         <div
-            class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]"
-        >
+            class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]">
             <div class="mx-auto max-w-[880px] text-center">
-                <h2
-                    class="text-[18px] leading-tight font-bold tracking-[-0.02em] text-[#2b2f45] md:text-[30px]"
-                >
+                <h2 class="text-[18px] leading-tight font-bold tracking-[-0.02em] text-[#2b2f45] md:text-[30px]">
                     {{ title }}
                 </h2>
-                <p
-                    class="mt-4 text-[15px] leading-7 text-[#787c92] md:text-base"
-                >
+                <p class="mt-4 text-[15px] leading-7 text-[#787c92] md:text-base">
                     {{ description }}
                 </p>
             </div>
 
             <div class="mt-10 grid gap-6">
-                <details
-                    v-for="(item, index) in faqs"
-                    :key="item.question"
-                    :open="index === 0"
-                    class="group rounded-[16px] border border-[#dbe8f3] bg-white/90 px-6 py-5 shadow-[0_10px_22px_rgba(39,92,140,0.05)]"
-                >
+                <details v-for="(item, index) in faqs" :key="item.question" :open="index === 0"
+                    class="group rounded-[16px] border border-[#dbe8f3] bg-white/90 px-6 py-5">
                     <summary
-                        class="flex cursor-pointer list-none items-center justify-between gap-6 text-[16px] font-semibold text-[#2c3048] md:text-[17px]"
-                    >
+                        class="flex cursor-pointer list-none items-center justify-between gap-6 text-[16px] font-semibold text-[#2c3048] md:text-[17px]">
                         <span>{{ item.question }}</span>
-                        <span
-                            class="flex h-7 w-7 items-center justify-center text-[#de8a00]"
-                        >
-                            <span
-                                class="text-[22px] leading-none group-open:hidden"
-                            >
+                        <span class="flex h-7 w-7 items-center justify-center text-[#de8a00]">
+                            <span class="text-[22px] leading-none group-open:hidden">
                                 +
                             </span>
-                            <span
-                                class="hidden text-[22px] leading-none group-open:block"
-                            >
+                            <span class="hidden text-[22px] leading-none group-open:block">
                                 -
                             </span>
                         </span>
                     </summary>
-                    <p
-                        class="mt-4 border-t border-[#e1ebf4] pt-4 text-[14px] leading-7 text-[#6e7388] md:text-[15px]"
-                    >
+                    <p class="mt-4 border-t border-[#e1ebf4] pt-4 text-[14px] leading-7 text-[#6e7388] md:text-[15px]">
                         {{ item.answer }}
                     </p>
                 </details>
