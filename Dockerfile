@@ -14,7 +14,12 @@ FROM node:22-bookworm-slim AS frontend
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends php-cli unzip \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY . .
+COPY --from=vendor /app/vendor /app/vendor
 
 RUN npm ci && npm run build
 
