@@ -19,15 +19,16 @@ import {
                 <h1
                     class="text-[24px] leading-[1.45] font-semibold tracking-[-0.03em] text-[#2f334e] sm:text-[30px] lg:text-[40px]"
                 >
-                    Jasa Pembuatan Website Profesional untuk Bisnis
+                    Layanan Pembuatan Website &amp; Aplikasi untuk Bisnis di
+                    Makassar
                 </h1>
 
                 <p
                     class="mt-4 max-w-[430px] text-[14px] leading-[1.75] text-[#66708a] md:text-[15px]"
                 >
-                    Kami membantu brand dan bisnis lokal memiliki website yang
-                    rapi, cepat, mudah dipercaya, dan siap dipakai untuk promosi
-                    maupun penjualan.
+                    Kami membantu brand dan bisnis lokal punya website maupun
+                    aplikasi web yang rapi, cepat, mudah dipercaya, dan siap
+                    dipakai untuk promosi, operasional, maupun penjualan.
                 </p>
 
                 <div class="mt-7">

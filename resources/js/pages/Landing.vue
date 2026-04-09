@@ -9,13 +9,21 @@ import Hero from '@/components/landing/Hero.vue';
 import Navbar from '@/components/landing/Navbar.vue';
 import Portfolio from '@/components/landing/Portfolio.vue';
 import ProcessSteps from '@/components/landing/ProcessSteps.vue';
+import ServicesGrid from '@/components/landing/ServicesGrid.vue';
 import Testimonials from '@/components/landing/Testimonials.vue';
 import WhyChoose from '@/components/landing/WhyChoose.vue';
 import LandingLayout from '@/layouts/LandingLayout.vue';
+import type { PageSeo, PublicPortfolioItem, PublicService } from '@/types';
+
+defineProps<{
+    featuredServices: PublicService[];
+    featuredPortfolioItems: PublicPortfolioItem[];
+    seo: PageSeo;
+}>();
 </script>
 
 <template>
-    <Head title="Frametech | Jasa Pembuatan Website">
+    <Head :title="seo.title">
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             rel="preconnect"
@@ -32,13 +40,14 @@ import LandingLayout from '@/layouts/LandingLayout.vue';
         <Navbar current-page="home" theme="brand" />
         <main>
             <Hero />
+            <ServicesGrid :services="featuredServices" />
             <Features theme="brand" />
             <WhyChoose theme="brand" />
             <BusinessTypes
                 background-class="bg-[linear-gradient(180deg,#eef7fd_0%,#fff7e8_100%)]"
                 accent-theme="brand"
             />
-            <Portfolio theme="brand" />
+            <Portfolio :projects="featuredPortfolioItems" theme="brand" />
             <ProcessSteps theme="brand" />
             <Testimonials background-class="bg-[#f5f9fd]" theme="brand" />
             <Faq />

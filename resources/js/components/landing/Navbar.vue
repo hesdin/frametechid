@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Menu, MessageCircle, X } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useSiteSettings } from '@/composables/useSiteSettings';
 import { about, blog, home, portfolio, pricing, services } from '@/routes';
 
 const props = withDefaults(
@@ -23,6 +24,7 @@ const props = withDefaults(
 const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
 const isMobileMenuOpen = ref(false);
+const { site } = useSiteSettings();
 
 const links = computed(() => [
     {
@@ -105,12 +107,12 @@ onBeforeUnmount(() => {
             class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]">
             <nav
                 class="flex items-center gap-3 rounded-[24px] border border-[#d9e5f0] bg-white px-4 py-3 shadow-[0_12px_28px_rgba(22,63,98,0.08)] transition-all duration-300 md:px-6 md:py-4">
-                <a :href="home().url" class="inline-flex shrink-0 items-center gap-2" aria-label="Frametech">
-                    <img src="/images/landing/logo-frametech.png" alt=""
+                <a :href="home().url" class="inline-flex shrink-0 items-center gap-2" :aria-label="site.siteName">
+                    <img :src="site.logoUrl" alt=""
                         class="h-6 w-6 shrink-0 object-contain md:h-7 md:w-7" aria-hidden="true" />
                     <span
                         class="text-[20px] leading-none font-semibold tracking-[-0.01em] text-[#27324a] md:text-[28px]">
-                        Frametech
+                        {{ site.siteName }}
                     </span>
                 </a>
 
@@ -131,7 +133,7 @@ onBeforeUnmount(() => {
                     <X v-else :size="21" />
                 </button>
 
-                <a href="#contact" :class="[
+                <a :href="site.whatsappUrl" :class="[
                     'ml-auto hidden shrink-0 items-center justify-center gap-2 rounded-[14px] border-2 px-3 py-2 text-sm leading-none font-semibold text-white transition-transform hover:-translate-y-px xl:inline-flex xl:px-5 xl:py-[14px] xl:text-[18px]',
                     consultationButtonClass,
                 ]">
@@ -153,7 +155,7 @@ onBeforeUnmount(() => {
                     </li>
                 </ul>
 
-                <a href="#contact" :class="[
+                <a :href="site.whatsappUrl" :class="[
                     'mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[14px] border-2 px-4 py-3 text-sm leading-none font-semibold text-white transition-transform hover:-translate-y-px',
                     consultationButtonClass,
                 ]" @click="closeMobileMenu">

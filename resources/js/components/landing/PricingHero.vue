@@ -24,14 +24,15 @@ import {
                 <h1
                     class="text-[28px] leading-[1.42] font-semibold tracking-[-0.03em] text-[#2f334e] md:text-[40px]"
                 >
-                    Paket Jasa Pembuatan Website Profesional untuk UMKM
+                    Harga Jasa Pembuatan Website &amp; Aplikasi di Makassar
                 </h1>
 
                 <p
                     class="mt-4 max-w-[450px] text-[14px] leading-[1.75] text-[#66708a] md:text-[15px]"
                 >
                     Temukan paket yang paling sesuai dengan tahap bisnis,
-                    kebutuhan konten, dan tujuan website yang ingin kamu capai.
+                    kebutuhan konten, dan target website atau aplikasi web yang
+                    ingin kamu capai.
                 </p>
 
                 <div class="mt-7">

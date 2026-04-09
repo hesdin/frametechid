@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\SiteSetting;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->shareSiteSettings();
     }
 
     /**
@@ -46,5 +49,15 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    protected function shareSiteSettings(): void
+    {
+        View::composer('app', function ($view): void {
+            $siteSetting = SiteSetting::current();
+
+            $view->with('siteSettings', $siteSetting->publicData());
+            $view->with('seo', request()->attributes->get('seo', $siteSetting->defaultSeo()));
+        });
     }
 }

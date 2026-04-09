@@ -1,27 +1,34 @@
 <script setup lang="ts">
-const packages = [
+import { computed } from 'vue';
+import { pricingAccentMap } from '@/lib/marketing';
+import type { PublicPricingPlan } from '@/types';
+
+const props = defineProps<{
+    plans?: PublicPricingPlan[];
+}>();
+
+const fallbackPlans: PublicPricingPlan[] = [
     {
-        name: 'Paket UMKM',
-        description:
-            'Untuk bisnis yang ingin mulai tampil profesional dengan struktur website yang ringkas dan jelas.',
-        accent: 'from-[#f4dfc9] to-[#c48943]',
-        icon: 'U',
+        name: 'Paket Start',
+        summary: 'Untuk bisnis yang ingin mulai tampil profesional dengan struktur website yang ringkas dan jelas.',
+        accentTone: 'bronze',
+        iconLetter: 'S',
     },
     {
-        name: 'Paket Menengah',
-        description:
-            'Untuk brand yang membutuhkan halaman lebih lengkap, konten lebih banyak, dan tampilan lebih detail.',
-        accent: 'from-[#f2f2f3] to-[#a5a8af]',
-        icon: 'M',
+        name: 'Paket Growth',
+        summary: 'Untuk brand yang membutuhkan halaman lebih lengkap, konten lebih banyak, dan tampilan lebih detail.',
+        accentTone: 'silver',
+        iconLetter: 'G',
     },
     {
-        name: 'Paket Premium',
-        description:
-            'Untuk kebutuhan presentasi brand yang lebih kuat dengan struktur, visual, dan pengalaman yang lebih eksklusif.',
-        accent: 'from-[#f2db89] to-[#d2a323]',
-        icon: 'P',
+        name: 'Paket Signature',
+        summary: 'Untuk kebutuhan presentasi brand yang lebih kuat dengan struktur, visual, dan pengalaman yang lebih eksklusif.',
+        accentTone: 'gold',
+        iconLetter: 'P',
     },
 ];
+
+const packages = computed(() => props.plans?.length ? props.plans : fallbackPlans);
 </script>
 
 <template>
@@ -68,10 +75,10 @@ const packages = [
                         <span
                             :class="[
                                 'grid h-[54px] w-[54px] shrink-0 place-items-center rounded-full bg-gradient-to-b text-[20px] font-semibold text-[#5c4330]',
-                                item.accent,
+                                pricingAccentMap[item.accentTone].badge,
                             ]"
                         >
-                            {{ item.icon }}
+                            {{ item.iconLetter }}
                         </span>
 
                         <div>
@@ -83,7 +90,7 @@ const packages = [
                             <p
                                 class="mt-2 text-[14px] leading-[1.7] text-[#6e7691] md:text-[15px]"
                             >
-                                {{ item.description }}
+                                {{ item.summary }}
                             </p>
                         </div>
                     </article>

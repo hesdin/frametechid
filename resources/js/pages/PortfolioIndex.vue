@@ -8,10 +8,16 @@ import PortfolioGallery from '@/components/landing/PortfolioGallery.vue';
 import PortfolioHero from '@/components/landing/PortfolioHero.vue';
 import ProcessSteps from '@/components/landing/ProcessSteps.vue';
 import LandingLayout from '@/layouts/LandingLayout.vue';
+import type { PageSeo, PublicPortfolioItem } from '@/types';
+
+defineProps<{
+    items: PublicPortfolioItem[];
+    seo: PageSeo;
+}>();
 </script>
 
 <template>
-    <Head title="Portofolio | Frametech">
+    <Head :title="seo.title">
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             rel="preconnect"
@@ -28,7 +34,7 @@ import LandingLayout from '@/layouts/LandingLayout.vue';
         <Navbar current-page="portfolio" theme="brand" />
         <main>
             <PortfolioHero />
-            <PortfolioGallery />
+            <PortfolioGallery :projects="items" />
             <ProcessSteps section-id="proses" theme="brand" />
             <Faq
                 title="Proses Terstruktur untuk Hasil yang Maksimal"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { MessageCircle } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { useSiteSettings } from '@/composables/useSiteSettings';
 
 const props = withDefaults(
     defineProps<{
@@ -11,8 +12,6 @@ const props = withDefaults(
     }>(),
     {
         title: 'Siap Membuat Website Profesional Untuk Bisnismu?',
-        description:
-            'Tim Frametech siap membantu dari tahap awal hingga website siap digunakan untuk mendukung pertumbuhan bisnismu.',
         buttonLabel: 'Konsultasi Gratis Sekarang',
         theme: 'blue',
     },
@@ -20,6 +19,13 @@ const props = withDefaults(
 
 const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
+const { site } = useSiteSettings();
+
+const resolvedDescription = computed(
+    () =>
+        props.description ||
+        `Tim ${site.value.siteName} siap membantu dari tahap awal hingga website siap digunakan untuk mendukung pertumbuhan bisnismu.`,
+);
 </script>
 
 <template>
@@ -47,11 +53,11 @@ const isBrandTheme = computed(() => props.theme === 'brand');
                     {{ props.title }}
                 </h2>
                 <p class="mt-5 max-w-[500px] text-[15px] leading-[1.7] text-[#6b7088] md:text-[16px]">
-                    {{ props.description }}
+                    {{ resolvedDescription }}
                 </p>
 
                 <div class="mt-8">
-                    <a href="https://wa.me/6281234567890" :class="[
+                    <a :href="site.whatsappUrl" :class="[
                         'inline-flex w-full items-center justify-center gap-3 rounded-[14px] border-2 px-6 py-3.5 text-[15px] leading-none font-semibold text-white transition-transform hover:-translate-y-px sm:w-auto sm:min-w-[360px] sm:text-[16px]',
                         isBrandTheme
                             ? 'border-[#c97f00] bg-gradient-to-b from-[#eda40f] to-[#d98700] shadow-[inset_0_2px_0_rgba(255,255,255,0.34),0_14px_28px_rgba(214,136,0,0.28)]'

@@ -6,6 +6,11 @@ import CTA from '@/components/landing/CTA.vue';
 import Footer from '@/components/landing/Footer.vue';
 import Navbar from '@/components/landing/Navbar.vue';
 import LandingLayout from '@/layouts/LandingLayout.vue';
+import type { PublicBlogPost } from '@/types/blog';
+
+defineProps<{
+    posts: PublicBlogPost[];
+}>();
 </script>
 
 <template>
@@ -26,7 +31,7 @@ import LandingLayout from '@/layouts/LandingLayout.vue';
         <Navbar current-page="blog" theme="brand" />
         <main>
             <BlogHero />
-            <BlogPosts />
+            <BlogPosts :posts="posts" />
             <CTA
                 title="Siap Tampil Lebih Profesional Secara Online?"
                 description="Mulai dari konsultasi gratis, kami urus semuanya untuk Anda."

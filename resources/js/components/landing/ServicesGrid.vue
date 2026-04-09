@@ -1,72 +1,34 @@
 <script setup lang="ts">
-import {
-    BedDouble,
-    BriefcaseBusiness,
-    Building2,
-    LayoutGrid,
-    Megaphone,
-    NotebookText,
-    School,
-    ShoppingCart,
-    Store,
-} from 'lucide-vue-next';
+import { computed } from 'vue';
+import { serviceIconMap } from '@/lib/marketing';
+import type { PublicService } from '@/types';
 
-const services = [
+const props = defineProps<{
+    services?: PublicService[];
+}>();
+
+const fallbackServices: PublicService[] = [
     {
-        icon: Store,
-        title: 'Website UMKM & Bisnis Lokal',
+        title: 'Jasa Pembuatan Website UMKM',
         description:
-            'Cocok untuk usaha yang ingin tampil lebih profesional dan mudah ditemukan pelanggan baru.',
+            'Cocok untuk usaha yang ingin tampil lebih profesional dan mudah ditemukan pelanggan baru di Makassar.',
+        iconKey: 'store',
     },
     {
-        icon: Building2,
         title: 'Company Profile Website',
         description:
             'Menampilkan profil perusahaan, layanan, proyek, dan kontak dalam tampilan yang meyakinkan.',
+        iconKey: 'building-2',
     },
     {
-        icon: ShoppingCart,
-        title: 'E-Commerce / Online Store',
+        title: 'Jasa Pembuatan Aplikasi Web',
         description:
-            'Website toko online yang memudahkan katalog produk, order, dan integrasi promosi digital.',
-    },
-    {
-        icon: Megaphone,
-        title: 'Landing Page Promosi',
-        description:
-            'Ideal untuk kampanye iklan, peluncuran produk, atau penawaran jasa yang butuh fokus konversi.',
-    },
-    {
-        icon: BedDouble,
-        title: 'Website Villa / Penginapan',
-        description:
-            'Menampilkan kamar, fasilitas, galeri, hingga informasi reservasi dengan tampilan lebih premium.',
-    },
-    {
-        icon: NotebookText,
-        title: 'Website Katalog Produk',
-        description:
-            'Memudahkan bisnis menampilkan daftar produk atau layanan secara rapi tanpa harus jualan penuh online.',
-    },
-    {
-        icon: School,
-        title: 'Website Sekolah / Kursus',
-        description:
-            'Memuat profil lembaga, program belajar, pendaftaran, dan informasi penting untuk siswa maupun orang tua.',
-    },
-    {
-        icon: BriefcaseBusiness,
-        title: 'Website Portofolio',
-        description:
-            'Menampilkan hasil kerja, pengalaman, dan keahlian agar personal brand atau agensi lebih dipercaya.',
-    },
-    {
-        icon: LayoutGrid,
-        title: 'Custom Website',
-        description:
-            'Jika kebutuhan bisnis lebih spesifik, kami bisa menyesuaikan struktur dan fitur website sesuai tujuanmu.',
+            'Pengembangan aplikasi web internal untuk dashboard admin, booking, katalog, atau workflow bisnis.',
+        iconKey: 'monitor-smartphone',
     },
 ];
+
+const services = computed(() => props.services?.length ? props.services : fallbackServices);
 </script>
 
 <template>
@@ -84,7 +46,7 @@ const services = [
                     class="rounded-[22px] border border-[#dce8f4] bg-white px-7 py-8 text-center">
                     <span
                         class="mx-auto grid h-[64px] w-[64px] place-items-center rounded-full bg-gradient-to-b from-[#2c87c9] to-[#176aaf] text-white shadow-[0_12px_20px_rgba(36,110,169,0.18)]">
-                        <component :is="service.icon" :size="28" />
+                        <component :is="serviceIconMap[service.iconKey] ?? serviceIconMap['layout-grid']" :size="28" />
                     </span>
 
                     <h3 class="mt-6 text-[17px] leading-[1.4] font-semibold text-[#2a2e49] md:text-[18px]">

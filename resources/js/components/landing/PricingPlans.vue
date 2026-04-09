@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { Check, ChevronDown } from 'lucide-vue-next';
+import { computed } from 'vue';
+import { pricingAccentMap } from '@/lib/marketing';
+import type { PublicPricingPlan } from '@/types';
 
-const plans = [
+const props = defineProps<{
+    plans?: PublicPricingPlan[];
+}>();
+
+const fallbackPlans: PublicPricingPlan[] = [
     {
-        name: 'Paket Mulai',
-        summary:
-            'Cocok untuk bisnis yang baru mulai go online dan butuh website yang ringkas.',
-        previousPrice: 'Rp1.500.000',
+        name: 'Paket Start',
+        summary: 'Cocok untuk bisnis yang baru mulai go online dan butuh website yang ringkas.',
+        previousPrice: 'Rp3.000.000',
         price: 'Rp1.500.000',
         discount: 'Diskon 50%',
         note: 'Harga terbaik untuk mulai tampil online dengan rapi.',
@@ -15,45 +21,45 @@ const plans = [
             '3 Halaman Website',
             'Gratis Domain & Hosting',
             'Desain premium sesuai brand bisnis',
-            'Konten website dibantu penyusunan',
-            'Bebas konsultasi revisi sampai basic fix',
         ],
+        iconLetter: 'S',
+        accentTone: 'bronze',
     },
     {
-        name: 'Paket Tumbuh',
-        summary:
-            'Untuk bisnis yang butuh halaman lebih lengkap, struktur lebih rapi, dan tampilan lebih kuat.',
-        previousPrice: 'Rp4.500.000',
+        name: 'Paket Growth',
+        summary: 'Untuk bisnis yang butuh halaman lebih lengkap, struktur lebih rapi, dan tampilan lebih kuat.',
+        previousPrice: 'Rp6.500.000',
         price: 'Rp4.500.000',
-        discount: 'Diskon 35%',
+        discount: 'Diskon 31%',
         note: 'Paket paling cocok untuk brand yang sedang berkembang.',
         cta: 'Pilih Paket Ini',
         features: [
             'Company Profile lengkap',
-            'Fitur form WhatsApp',
             'SEO lokal dan map link',
             'Support basic fitur tambahan',
-            'Halaman produk/layanan dan galeri hingga 10 item',
         ],
+        iconLetter: 'G',
+        accentTone: 'silver',
     },
     {
-        name: 'Paket Maju',
-        summary:
-            'Paket paling lengkap untuk usaha yang butuh website lebih detail dan siap tampil premium.',
-        previousPrice: 'Rp8.500.000',
+        name: 'Paket Signature',
+        summary: 'Paket paling lengkap untuk usaha yang butuh website lebih detail dan siap tampil premium.',
+        previousPrice: 'Rp11.000.000',
         price: 'Rp8.500.000',
-        discount: 'Diskon 45%',
+        discount: 'Diskon 23%',
         note: 'Untuk brand dengan kebutuhan presentasi lebih eksklusif.',
-        cta: 'Pilih Premium',
+        cta: 'Konsultasi Premium',
         features: [
-            'Semua fitur tumbuh',
-            'Desain yang lebih eksklusif',
-            'Katalog produk lebih banyak',
-            'Free revisi dan support hingga 3 bulan',
+            'Semua fitur Growth',
             'Custom section dan fitur minor',
+            'Prioritas kebutuhan aplikasi web',
         ],
+        iconLetter: 'P',
+        accentTone: 'gold',
     },
 ];
+
+const plans = computed(() => props.plans?.length ? props.plans : fallbackPlans);
 </script>
 
 <template>
@@ -75,13 +81,9 @@ const plans = [
                     class="flex h-full flex-col rounded-[26px] border border-[#dce8f4] bg-white px-7 py-8">
                     <span :class="[
                         'grid h-[56px] w-[56px] place-items-center rounded-full text-[18px] font-semibold',
-                        index === 0
-                            ? 'bg-[linear-gradient(180deg,#f2ddca_0%,#d79f68_100%)] text-[#734822]'
-                            : index === 1
-                                ? 'bg-[linear-gradient(180deg,#f3f3f3_0%,#bcc0c7_100%)] text-[#5f6268]'
-                                : 'bg-[linear-gradient(180deg,#f5e08d_0%,#d8aa27_100%)] text-[#6e5510]',
+                        pricingAccentMap[plan.accentTone].badge,
                     ]">
-                        {{ plan.name.charAt(6) }}
+                        {{ plan.iconLetter }}
                     </span>
 
                     <h3 class="mt-5 text-[18px] leading-tight font-semibold text-[#2a2e49]">
@@ -115,9 +117,9 @@ const plans = [
                                 class="mt-[2px] inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2c87c9] text-white">
                                 <Check :size="12" :stroke-width="3" />
                             </span>
-                            <span>{{ feature }}</span>
-                        </li>
-                    </ul>
+                                    <span>{{ feature }}</span>
+                                </li>
+                            </ul>
 
                     <details class="mt-5 border-t border-[#eceff4] pt-5">
                         <summary
@@ -133,7 +135,7 @@ const plans = [
 
                     <a href="#contact"
                         class="mt-7 inline-flex items-center justify-center rounded-[12px] border border-[#c97f00] bg-gradient-to-b from-[#eda40f] to-[#d98700] px-6 py-3 text-[15px] font-semibold text-white shadow-[0_3px_0_0_rgba(167,103,0,0.9)_inset]">
-                        {{ plan.cta }}
+                        {{ plan.cta ?? 'Pilih Paket' }}
                     </a>
                 </article>
             </div>

@@ -1,4 +1,6 @@
 import type { Auth } from '@/types/auth';
+import type { MarketingSharedData } from '@/types/marketing';
+import type { SiteSettings } from '@/types/site';
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -18,6 +20,11 @@ declare module '@inertiajs/core' {
         sharedPageProps: {
             name: string;
             auth: Auth;
+            marketing: MarketingSharedData;
+            site: SiteSettings;
+            flash: {
+                success?: string | null;
+            };
             sidebarOpen: boolean;
             [key: string]: unknown;
         };

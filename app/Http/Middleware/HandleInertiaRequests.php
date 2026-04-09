@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Service;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,10 +40,24 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
+            'name' => SiteSetting::current()->site_name,
             'auth' => [
                 'user' => $request->user(),
             ],
+            'flash' => [
+                'success' => $request->session()->get('success'),
+            ],
+            'marketing' => fn (): array => [
+                'footerServices' => Schema::hasTable('services')
+                    ? Service::query()
+                        ->active()
+                        ->ordered()
+                        ->limit(6)
+                        ->pluck('title')
+                        ->all()
+                    : [],
+            ],
+            'site' => fn () => SiteSetting::current()->publicData(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

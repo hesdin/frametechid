@@ -31,16 +31,17 @@ import {
                 <h1
                     class="mt-4 text-[24px] leading-[1.44] font-semibold tracking-[-0.03em] text-balance text-[#2f334e] sm:text-[30px] lg:mt-5 lg:text-[40px]"
                 >
-                    Jasa Pembuatan Website Profesional untuk UMKM &amp; Bisnis
-                    Lokal
+                    Jasa Pembuatan Website &amp; Aplikasi Profesional di
+                    Makassar untuk UMKM dan Bisnis Lokal
                 </h1>
 
                 <p
                     class="mt-4 max-w-[500px] text-[14px] leading-[1.65] text-[#5f6d84] sm:text-[15px] lg:mt-5 lg:text-[16px]"
                 >
-                    Website modern yang rapi, cepat, dan dirancang untuk bantu
-                    bisnis lokal tampil lebih meyakinkan dan dipercaya
-                    pelanggan.
+                    Kami membantu bisnis di Makassar memiliki website dan
+                    aplikasi web yang rapi, cepat, mudah dipercaya, dan siap
+                    mendatangkan lebih banyak calon pelanggan dari Google
+                    maupun WhatsApp.
                 </p>
 
                 <div class="mt-6 flex flex-wrap gap-3 lg:mt-7 lg:gap-4">

@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-vue-next';
+import {
+    BookOpen,
+    FilePenLine,
+    FolderGit2,
+    LayoutGrid,
+    Layers3,
+    PackageSearch,
+    PanelsTopLeft,
+    Settings2,
+} from 'lucide-vue-next';
+import PortfolioItemController from '@/actions/App/Http/Controllers/Cms/PortfolioItemController';
+import PostController from '@/actions/App/Http/Controllers/Cms/PostController';
+import PricingPlanController from '@/actions/App/Http/Controllers/Cms/PricingPlanController';
+import ServiceController from '@/actions/App/Http/Controllers/Cms/ServiceController';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -15,6 +28,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { edit as editSite } from '@/routes/site-settings';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -22,6 +36,35 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Manage Blog',
+        href: PostController.index(),
+        icon: FilePenLine,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Manage Services',
+        href: ServiceController.index(),
+        icon: Layers3,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Pricing Plans',
+        href: PricingPlanController.index(),
+        icon: PackageSearch,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Portfolio',
+        href: PortfolioItemController.index(),
+        icon: PanelsTopLeft,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Site Settings',
+        href: editSite(),
+        icon: Settings2,
     },
 ];
 

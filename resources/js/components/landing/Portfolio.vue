@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { portfolio } from '@/routes';
+import type { PublicPortfolioItem } from '@/types';
 
 const props = withDefaults(
     defineProps<{
         theme?: 'blue' | 'red' | 'brand';
+        projects?: PublicPortfolioItem[];
     }>(),
     {
         theme: 'blue',
@@ -13,40 +16,38 @@ const props = withDefaults(
 const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
 
-const projects = [
+const fallbackProjects: PublicPortfolioItem[] = [
     {
-        title: 'Serata Engineering - Perusahaan Teknik & Industri',
-        link: 'https://example.com/serata-engineering',
-        desktopImage:
-            'https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=1800&q=80',
-        mobileImage:
-            'https://images.unsplash.com/photo-1598128558393-70ff21433be0?auto=format&fit=crop&w=900&q=80',
+        title: 'Serata Engineering',
+        summary: 'Company profile untuk perusahaan teknik dan industri.',
+        liveUrl: 'https://example.com/serata-engineering',
+        desktopImage: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=1800&q=80',
+        mobileImage: 'https://images.unsplash.com/photo-1598128558393-70ff21433be0?auto=format&fit=crop&w=900&q=80',
     },
     {
-        title: 'Coral Cafe Penida - Coffee & Eatery',
-        link: 'https://example.com/coral-cafe-penida',
-        desktopImage:
-            'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80',
-        mobileImage:
-            'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=900&q=80',
+        title: 'Coral Cafe',
+        summary: 'Landing page cafe dengan fokus visual dan reservasi.',
+        liveUrl: 'https://example.com/coral-cafe',
+        desktopImage: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80',
+        mobileImage: 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=900&q=80',
     },
     {
-        title: 'Ruang Kopi - Coffee Roastery',
-        link: 'https://example.com/ruang-kopi',
-        desktopImage:
-            'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1800&q=80',
-        mobileImage:
-            'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80',
+        title: 'Makassar Booking Suite',
+        summary: 'Contoh aplikasi web booking dan dashboard admin.',
+        liveUrl: 'https://example.com/makassar-booking-suite',
+        desktopImage: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1800&q=80',
+        mobileImage: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80',
     },
     {
-        title: 'Sun & Sari - Travel Agency',
-        link: 'https://example.com/sun-sari-travel',
-        desktopImage:
-            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80',
-        mobileImage:
-            'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80',
+        title: 'Harmoni Clinic',
+        summary: 'Website klinik dengan struktur layanan dan kontak yang jelas.',
+        liveUrl: 'https://example.com/harmoni-clinic',
+        desktopImage: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1800&q=80',
+        mobileImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80',
     },
 ];
+
+const projects = computed(() => props.projects?.length ? props.projects : fallbackProjects);
 </script>
 
 <template>
@@ -76,7 +77,7 @@ const projects = [
                     class="group"
                 >
                     <a
-                        :href="project.link"
+                        :href="project.liveUrl ?? '#'"
                         target="_blank"
                         rel="noopener noreferrer"
                         :class="[
@@ -107,13 +108,16 @@ const projects = [
                         >
                             {{ project.title }}
                         </h3>
+                        <p class="mt-2 text-sm leading-[1.7] text-[#6d7390]">
+                            {{ project.summary }}
+                        </p>
                     </div>
                 </article>
             </div>
 
             <div class="mt-14 text-center">
                 <a
-                    href="#kontak"
+                    :href="portfolio().url"
                     :class="[
                         'inline-flex items-center justify-center rounded-[16px] px-14 py-[14px] text-[15px] font-semibold text-white transition-transform hover:-translate-y-px md:text-[16px]',
                         isBrandTheme

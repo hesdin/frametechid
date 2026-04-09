@@ -30,14 +30,31 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Laravel')) }}</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <meta name="description" content="{{ $seo['description'] ?? '' }}">
+        <meta name="keywords" content="{{ implode(', ', $seo['keywords'] ?? []) }}">
+        <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Laravel')) }}">
+        <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
+        <meta property="og:url" content="{{ $seo['canonical'] ?? url()->current() }}">
+        <meta property="og:image" content="{{ $seo['ogImage'] ?? ($siteSettings['logoUrl'] ?? '') }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Laravel')) }}">
+        <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
+        <meta name="twitter:image" content="{{ $seo['ogImage'] ?? ($siteSettings['logoUrl'] ?? '') }}">
+
+        <link rel="icon" href="{{ $siteSettings['faviconUrl'] ?? asset('favicon.ico') }}" sizes="any">
+        <link rel="icon" href="{{ $siteSettings['faviconUrl'] ?? asset('favicon.svg') }}" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="{{ $siteSettings['faviconUrl'] ?? asset('apple-touch-icon.png') }}">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+
+        @foreach (($seo['schema'] ?? []) as $schema)
+            <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+        @endforeach
 
         @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead

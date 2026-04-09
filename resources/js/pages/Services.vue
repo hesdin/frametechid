@@ -10,10 +10,17 @@ import ServicesHero from '@/components/landing/ServicesHero.vue';
 import ServicesPricing from '@/components/landing/ServicesPricing.vue';
 import WhyChoose from '@/components/landing/WhyChoose.vue';
 import LandingLayout from '@/layouts/LandingLayout.vue';
+import type { PageSeo, PublicPricingPlan, PublicService } from '@/types';
+
+defineProps<{
+    services: PublicService[];
+    pricingPlans: PublicPricingPlan[];
+    seo: PageSeo;
+}>();
 </script>
 
 <template>
-    <Head title="Layanan | Frametech">
+    <Head :title="seo.title">
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             rel="preconnect"
@@ -30,7 +37,7 @@ import LandingLayout from '@/layouts/LandingLayout.vue';
         <Navbar current-page="services" theme="brand" />
         <main>
             <ServicesHero />
-            <ServicesGrid />
+            <ServicesGrid :services="services" />
             <WhyChoose
                 section-id="tentang"
                 title="Kenapa Jasa Pembuatan Website di Frametech"
@@ -44,7 +51,7 @@ import LandingLayout from '@/layouts/LandingLayout.vue';
                 button-href="#contact"
                 accent-theme="brand"
             />
-            <ServicesPricing />
+            <ServicesPricing :plans="pricingPlans" />
             <CTA theme="brand" />
         </main>
         <Footer theme="brand" />

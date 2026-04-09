@@ -24,15 +24,16 @@ import {
                 <h1
                     class="text-[28px] leading-[1.42] font-semibold tracking-[-0.03em] text-[#2f334e] md:text-[40px]"
                 >
-                    Bangun Citra Digital Bisnismu Bersama Kami
+                    Portofolio Website &amp; Aplikasi Bisnis yang Sudah Kami
+                    Kerjakan
                 </h1>
 
                 <p
                     class="mt-4 max-w-[450px] text-[14px] leading-[1.75] text-[#66708a] md:text-[15px]"
                 >
-                    Lihat beberapa contoh website yang sudah kami kerjakan untuk
-                    berbagai industri, mulai dari UMKM, hospitality, hingga
-                    bisnis profesional.
+                    Lihat contoh website dan aplikasi web yang sudah kami
+                    kerjakan untuk berbagai industri, mulai dari UMKM,
+                    hospitality, hingga bisnis profesional di Makassar.
                 </p>
 
                 <div class="mt-7">

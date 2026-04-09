@@ -5,9 +5,13 @@ import {
     Linkedin,
     MessageCircle,
     Music2,
+    Youtube,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+import { useSiteSettings } from '@/composables/useSiteSettings';
 import { about, blog, home, portfolio, pricing, services } from '@/routes';
+import type { MarketingSharedData } from '@/types';
 
 const props = withDefaults(
     defineProps<{
@@ -20,15 +24,23 @@ const props = withDefaults(
 
 const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
+const { site } = useSiteSettings();
+const page = usePage();
 
-const serviceItems = [
-    'Jasa Pembuatan Website',
-    'Website Company Profile',
-    'Website Toko Online',
-    'Website Hotel & Villa',
-    'Website Klinik',
-    'Website Sekolah',
-];
+const serviceItems = computed(() => {
+    const marketing = page.props.marketing as MarketingSharedData | undefined;
+
+    return marketing?.footerServices?.length
+        ? marketing.footerServices
+        : [
+              'Jasa Pembuatan Website',
+              'Website Company Profile',
+              'Website Toko Online',
+              'Jasa Pembuatan Aplikasi Web',
+              'Website Klinik',
+              'Website Sekolah',
+          ];
+});
 
 const pages = [
     { label: 'Beranda', href: home().url },
@@ -39,12 +51,15 @@ const pages = [
     { label: 'Blog', href: blog().url },
 ];
 
-const socialLinks = [
-    { label: 'Instagram', href: '#', icon: Instagram },
-    { label: 'LinkedIn', href: '#', icon: Linkedin },
-    { label: 'Facebook', href: '#', icon: Facebook },
-    { label: 'TikTok', href: '#', icon: Music2 },
-];
+const socialLinks = computed(() =>
+    [
+        { label: 'Instagram', href: site.value.instagramUrl, icon: Instagram },
+        { label: 'LinkedIn', href: site.value.linkedinUrl, icon: Linkedin },
+        { label: 'Facebook', href: site.value.facebookUrl, icon: Facebook },
+        { label: 'TikTok', href: site.value.tiktokUrl, icon: Music2 },
+        { label: 'YouTube', href: site.value.youtubeUrl, icon: Youtube },
+    ].filter((item) => item.href),
+);
 </script>
 
 <template>
@@ -59,10 +74,10 @@ const socialLinks = [
                     <a
                         :href="home().url"
                         class="inline-flex items-center gap-2"
-                        aria-label="Frametech"
+                        :aria-label="site.siteName"
                     >
                         <img
-                            src="/images/landing/logo-frametech.png"
+                            :src="site.logoUrl"
                             alt=""
                             class="h-9 w-9 shrink-0 object-contain"
                             aria-hidden="true"
@@ -70,18 +85,14 @@ const socialLinks = [
                         <span
                             class="text-[28px] leading-none font-semibold tracking-[-0.01em] text-[#2a2e49]"
                         >
-                            Frametech
+                            {{ site.siteName }}
                         </span>
                     </a>
 
                     <p
                         class="mt-6 text-[14px] leading-[1.65] text-[#6f7390] md:text-[16px]"
                     >
-                        Frametech adalah layanan jasa pembuatan website
-                        profesional untuk UMKM dan bisnis lokal. Kami membantu
-                        brand tampil lebih rapi, mudah dipercaya, dan siap
-                        berkembang melalui website yang terstruktur dan mudah
-                        digunakan.
+                        {{ site.companyDescription }}
                     </p>
                 </div>
 
@@ -126,7 +137,7 @@ const socialLinks = [
                         Hubungi Kami
                     </h4>
                     <a
-                        href="https://wa.me/628986650404"
+                        :href="site.whatsappUrl"
                         :class="[
                             'mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[16px] border-2 px-6 py-4 text-[17px] leading-none font-semibold text-white',
                             isBrandTheme
@@ -137,19 +148,29 @@ const socialLinks = [
                         ]"
                     >
                         <MessageCircle :size="27" />
-                        <span>08986650404</span>
+                        <span>{{ site.phoneNumber }}</span>
                     </a>
 
                     <p class="mt-5 text-[14px] text-[#6f7390] md:text-[16px]">
-                        Setiap Hari, 09.00 - 21.00 WITA
+                        {{ site.businessHours }}
                     </p>
 
-                    <div class="mt-6 flex items-center gap-4">
+                    <p v-if="site.email" class="mt-3 text-[14px] text-[#6f7390] md:text-[16px]">
+                        {{ site.email }}
+                    </p>
+
+                    <p v-if="site.address" class="mt-2 text-[14px] text-[#6f7390] md:text-[16px]">
+                        {{ site.address }}
+                    </p>
+
+                    <div v-if="socialLinks.length > 0" class="mt-6 flex items-center gap-4">
                         <a
                             v-for="social in socialLinks"
                             :key="social.label"
-                            :href="social.href"
+                            :href="social.href ?? '#'"
                             :aria-label="social.label"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             :class="[
                                 'grid h-10 w-10 place-items-center rounded-full text-white transition-transform hover:-translate-y-px',
                                 isBrandTheme
@@ -168,8 +189,8 @@ const socialLinks = [
             <p
                 class="mt-14 border-t border-[#dedfe6] pt-8 text-center text-[16px] text-[#767b95] md:text-[17px]"
             >
-                © {{ new Date().getFullYear() }} Frametech oleh PT. Global
-                Creative Labs. Hak cipta dilindungi.
+                © {{ new Date().getFullYear() }} {{ site.siteName }} oleh
+                {{ site.copyrightName }}. Hak cipta dilindungi.
             </p>
         </div>
     </footer>

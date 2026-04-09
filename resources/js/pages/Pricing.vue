@@ -8,10 +8,16 @@ import PricingHero from '@/components/landing/PricingHero.vue';
 import PricingPlans from '@/components/landing/PricingPlans.vue';
 import ProcessSteps from '@/components/landing/ProcessSteps.vue';
 import LandingLayout from '@/layouts/LandingLayout.vue';
+import type { PageSeo, PublicPricingPlan } from '@/types';
+
+defineProps<{
+    plans: PublicPricingPlan[];
+    seo: PageSeo;
+}>();
 </script>
 
 <template>
-    <Head title="Paket & Harga | Frametech">
+    <Head :title="seo.title">
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             rel="preconnect"
@@ -28,7 +34,7 @@ import LandingLayout from '@/layouts/LandingLayout.vue';
         <Navbar current-page="pricing" theme="brand" />
         <main>
             <PricingHero />
-            <PricingPlans />
+            <PricingPlans :plans="plans" />
             <ProcessSteps section-id="proses" theme="brand" />
             <Faq />
             <CTA
