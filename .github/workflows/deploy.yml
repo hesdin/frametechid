@@ -5,11 +5,15 @@ on:
   push:
     branches:
       - main
-      - master
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Deploy over SSH
@@ -20,9 +24,16 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: 22
           script: |
-            set -e
+            set -euo pipefail
             cd /srv/frametechid
+
+            test -f .env.production
+
             git fetch --all --prune
-            git checkout "${{ github.ref_name }}"
-            git pull origin "${{ github.ref_name }}"
+            git checkout main
+            git reset --hard origin/main
+
+            chmod +x scripts/deploy.sh
             ./scripts/deploy.sh
+
+            docker compose --env-file .env.production ps
