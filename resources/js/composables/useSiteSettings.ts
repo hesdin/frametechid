@@ -27,6 +27,33 @@ const fallbackSiteSettings: SiteSettings = {
     seoFocusKeyword: 'Jasa Pembuatan Aplikasi Makassar',
     logoUrl: '/images/landing/logo-frametech.png',
     faviconUrl: '/favicon.ico',
+    businessTypesSlides: [
+        {
+            title: 'Interior',
+            imageUrl:
+                'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1600&q=80',
+        },
+        {
+            title: 'Produk',
+            imageUrl:
+                'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80',
+        },
+        {
+            title: 'Hospitality',
+            imageUrl:
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1600&q=80',
+        },
+        {
+            title: 'Portfolio',
+            imageUrl:
+                'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80',
+        },
+        {
+            title: 'Company',
+            imageUrl:
+                'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1600&q=80',
+        },
+    ],
 };
 
 export function useSiteSettings() {

@@ -1,3 +1,8 @@
+export type BusinessTypesSlide = {
+    title: string;
+    imageUrl: string;
+};
+
 export type SiteSettings = {
     siteName: string;
     companyDescription: string;
@@ -21,6 +26,7 @@ export type SiteSettings = {
     seoFocusKeyword: string | null;
     logoUrl: string;
     faviconUrl: string;
+    businessTypesSlides: BusinessTypesSlide[];
 };
 
 export type EditableSiteSettings = Omit<SiteSettings, 'whatsappUrl'>;

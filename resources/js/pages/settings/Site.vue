@@ -47,6 +47,13 @@ const form = useForm({
     seoLocality: props.settings.seoLocality ?? '',
     seoRegion: props.settings.seoRegion ?? '',
     seoFocusKeyword: props.settings.seoFocusKeyword ?? '',
+    businessTypesSlides:
+        props.settings.businessTypesSlides.length > 0
+            ? props.settings.businessTypesSlides.map((slide) => ({
+                  title: slide.title,
+                  imageUrl: slide.imageUrl,
+              }))
+            : [{ title: '', imageUrl: '' }],
     logo: null as File | null,
     favicon: null as File | null,
     remove_logo: false,
@@ -68,6 +75,17 @@ function assignFile(
     const target = event.target as HTMLInputElement;
     form[field] = target.files?.[0] ?? null;
     form[resetField] = false;
+}
+
+function addBusinessTypeSlide(): void {
+    form.businessTypesSlides.push({
+        title: '',
+        imageUrl: '',
+    });
+}
+
+function removeBusinessTypeSlide(index: number): void {
+    form.businessTypesSlides.splice(index, 1);
 }
 
 function submit(): void {
@@ -152,6 +170,51 @@ function submit(): void {
                                 class="h-12 w-12 rounded-lg border object-contain p-1"
                             />
                             <InputError :message="form.errors.favicon" />
+                        </div>
+
+                        <div class="grid gap-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <Label>Slide section jenis bisnis</Label>
+                                <Button type="button" variant="outline" size="sm" @click="addBusinessTypeSlide">
+                                    Tambah slide
+                                </Button>
+                            </div>
+                            <p class="text-sm text-muted-foreground">
+                                Atur daftar gambar yang tampil di carousel section “Website untuk Berbagai Jenis UMKM & Bisnis Lokal”.
+                            </p>
+                            <div
+                                v-for="(slide, index) in form.businessTypesSlides"
+                                :key="index"
+                                class="grid gap-3 rounded-xl border p-4"
+                            >
+                                <div class="grid gap-2">
+                                    <Label :for="`business-slide-title-${index}`">Judul slide</Label>
+                                    <Input :id="`business-slide-title-${index}`" v-model="slide.title" placeholder="Contoh: Interior" />
+                                    <InputError :message="form.errors[`businessTypesSlides.${index}.title`]" />
+                                </div>
+                                <div class="grid gap-2">
+                                    <Label :for="`business-slide-image-${index}`">URL gambar</Label>
+                                    <Input :id="`business-slide-image-${index}`" v-model="slide.imageUrl" placeholder="https://..." />
+                                    <InputError :message="form.errors[`businessTypesSlides.${index}.imageUrl`]" />
+                                </div>
+                                <img
+                                    v-if="slide.imageUrl"
+                                    :src="slide.imageUrl"
+                                    :alt="`Preview slide ${slide.title || index + 1}`"
+                                    class="h-24 w-full rounded-lg border object-cover md:h-32"
+                                />
+                                <div class="flex justify-end">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        :disabled="form.businessTypesSlides.length <= 1"
+                                        @click="removeBusinessTypeSlide(index)"
+                                    >
+                                        Hapus slide
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

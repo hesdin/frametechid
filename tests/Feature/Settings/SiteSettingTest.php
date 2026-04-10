@@ -17,6 +17,7 @@ test('authenticated users can view the site settings page', function () {
             ->has('settings.siteName')
             ->has('settings.logoUrl')
             ->has('settings.faviconUrl')
+            ->has('settings.businessTypesSlides')
         );
 });
 
@@ -26,6 +27,16 @@ test('authenticated users can update site settings and branding assets', functio
     $user = User::factory()->create();
     $logo = UploadedFile::fake()->image('logo.png', 120, 120);
     $favicon = UploadedFile::fake()->image('favicon.png', 64, 64);
+    $businessTypesSlides = [
+        [
+            'title' => 'Website Cafe',
+            'imageUrl' => 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80',
+        ],
+        [
+            'title' => 'Website Klinik',
+            'imageUrl' => 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80',
+        ],
+    ];
 
     $this->actingAs($user)
         ->post(route('site-settings.update'), [
@@ -48,6 +59,7 @@ test('authenticated users can update site settings and branding assets', functio
             'seoLocality' => 'Makassar',
             'seoRegion' => 'Sulawesi Selatan',
             'seoFocusKeyword' => 'Jasa Pembuatan Aplikasi Makassar',
+            'businessTypesSlides' => $businessTypesSlides,
             'logo' => $logo,
             'favicon' => $favicon,
         ])
@@ -59,6 +71,7 @@ test('authenticated users can update site settings and branding assets', functio
     expect($siteSetting->whatsapp_number)->toBe('628123456789');
     expect($siteSetting->instagram_url)->toBe('https://instagram.com/acmestudio');
     expect($siteSetting->seo_focus_keyword)->toBe('Jasa Pembuatan Aplikasi Makassar');
+    expect($siteSetting->business_types_slides)->toBe($businessTypesSlides);
 
     expect($siteSetting->logo_path)->not->toBeNull();
     expect($siteSetting->favicon_path)->not->toBeNull();
@@ -75,6 +88,8 @@ test('authenticated users can update site settings and branding assets', functio
             ->where('site.siteName', 'Acme Studio')
             ->where('site.phoneNumber', '08123456789')
             ->where('site.instagramUrl', 'https://instagram.com/acmestudio')
+            ->where('site.businessTypesSlides.0.title', $businessTypesSlides[0]['title'])
+            ->where('site.businessTypesSlides.0.imageUrl', $businessTypesSlides[0]['imageUrl'])
         );
 
     $this->get(route('site-assets.show', ['asset' => 'logo']))

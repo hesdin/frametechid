@@ -37,10 +37,11 @@ class SiteSetting extends Model
         'seo_focus_keyword',
         'logo_path',
         'favicon_path',
+        'business_types_slides',
     ];
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public static function defaults(): array
     {
@@ -66,6 +67,17 @@ class SiteSetting extends Model
             'seo_focus_keyword' => 'Jasa Pembuatan Aplikasi Makassar',
             'logo_path' => null,
             'favicon_path' => null,
+            'business_types_slides' => static::defaultBusinessTypesSlides(),
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'business_types_slides' => 'array',
         ];
     }
 
@@ -113,6 +125,7 @@ class SiteSetting extends Model
             'seoFocusKeyword' => $this->seo_focus_keyword,
             'logoUrl' => route('site-assets.show', ['asset' => 'logo', 'v' => $assetVersion]),
             'faviconUrl' => route('site-assets.show', ['asset' => 'favicon', 'v' => $assetVersion]),
+            'businessTypesSlides' => $this->businessTypesSlides(),
             'faviconMime' => $this->faviconMime(),
         ];
     }
@@ -212,6 +225,7 @@ class SiteSetting extends Model
             $updatedAt,
             $this->logo_path ?? 'no-logo',
             $this->favicon_path ?? 'no-favicon',
+            json_encode($this->businessTypesSlides()),
         ]));
     }
 
@@ -223,5 +237,54 @@ class SiteSetting extends Model
             'webp' => 'image/webp',
             default => 'image/x-icon',
         };
+    }
+
+    /**
+     * @return list<array{title: string, imageUrl: string}>
+     */
+    private function businessTypesSlides(): array
+    {
+        $slides = collect($this->business_types_slides ?? static::defaultBusinessTypesSlides())
+            ->filter(fn (mixed $slide): bool => is_array($slide))
+            ->map(function (array $slide): array {
+                return [
+                    'title' => trim((string) ($slide['title'] ?? '')),
+                    'imageUrl' => trim((string) ($slide['imageUrl'] ?? $slide['image_url'] ?? '')),
+                ];
+            })
+            ->filter(fn (array $slide): bool => $slide['title'] !== '' && filter_var($slide['imageUrl'], FILTER_VALIDATE_URL) !== false)
+            ->values()
+            ->all();
+
+        return $slides !== [] ? $slides : static::defaultBusinessTypesSlides();
+    }
+
+    /**
+     * @return list<array{title: string, imageUrl: string}>
+     */
+    private static function defaultBusinessTypesSlides(): array
+    {
+        return [
+            [
+                'title' => 'Interior',
+                'imageUrl' => 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1600&q=80',
+            ],
+            [
+                'title' => 'Produk',
+                'imageUrl' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80',
+            ],
+            [
+                'title' => 'Hospitality',
+                'imageUrl' => 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1600&q=80',
+            ],
+            [
+                'title' => 'Portfolio',
+                'imageUrl' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80',
+            ],
+            [
+                'title' => 'Company',
+                'imageUrl' => 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1600&q=80',
+            ],
+        ];
     }
 }

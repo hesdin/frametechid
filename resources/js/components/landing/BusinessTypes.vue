@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Check, MessageCircle } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { useSiteSettings } from '@/composables/useSiteSettings';
 
-const showcases = [
+const fallbackShowcases = [
     {
         title: 'Interior',
         imageUrl:
@@ -65,6 +66,13 @@ const props = withDefaults(
 
 const isRedTheme = computed(() => props.accentTheme === 'red');
 const isBrandTheme = computed(() => props.accentTheme === 'brand');
+const { site } = useSiteSettings();
+
+const showcases = computed(() =>
+    site.value.businessTypesSlides.length > 0
+        ? site.value.businessTypesSlides
+        : fallbackShowcases,
+);
 </script>
 
 <template>

@@ -39,6 +39,7 @@ class SiteSettingController extends Controller
                 'seoFocusKeyword' => $siteSetting->seo_focus_keyword,
                 'logoUrl' => $siteSetting->publicData()['logoUrl'],
                 'faviconUrl' => $siteSetting->publicData()['faviconUrl'],
+                'businessTypesSlides' => $siteSetting->publicData()['businessTypesSlides'],
             ],
         ]);
     }
@@ -74,6 +75,7 @@ class SiteSettingController extends Controller
             'seo_locality' => $validated['seoLocality'] ?? null,
             'seo_region' => $validated['seoRegion'] ?? null,
             'seo_focus_keyword' => $validated['seoFocusKeyword'] ?? null,
+            'business_types_slides' => $this->normalizeBusinessTypeSlides($validated['businessTypesSlides'] ?? []),
         ];
 
         if ($request->boolean('remove_logo')) {
@@ -107,5 +109,21 @@ class SiteSettingController extends Controller
         if ($path) {
             Storage::disk('public')->delete($path);
         }
+    }
+
+    /**
+     * @param  list<array{title?: string, imageUrl?: string}>  $slides
+     * @return list<array{title: string, imageUrl: string}>
+     */
+    protected function normalizeBusinessTypeSlides(array $slides): array
+    {
+        return collect($slides)
+            ->map(fn (array $slide): array => [
+                'title' => trim((string) ($slide['title'] ?? '')),
+                'imageUrl' => trim((string) ($slide['imageUrl'] ?? '')),
+            ])
+            ->filter(fn (array $slide): bool => $slide['title'] !== '' && $slide['imageUrl'] !== '')
+            ->values()
+            ->all();
     }
 }
