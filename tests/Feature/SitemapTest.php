@@ -34,3 +34,13 @@ test('robots file references sitemap location', function (): void {
     $response->assertSee('Allow: /', false);
     $response->assertSee('Sitemap: '.route('sitemap'), false);
 });
+
+test('favicon fallback serves branded asset', function (): void {
+    $response = $this->get(route('site-assets.show', ['asset' => 'favicon']));
+
+    $response->assertSuccessful();
+    expect($response->headers->get('Content-Type'))->toContain('image/svg+xml');
+    expect(file_get_contents(public_path('favicon.svg')))
+        ->toContain('Frametech favicon')
+        ->not->toContain('#FF2D20');
+});

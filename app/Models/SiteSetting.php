@@ -185,6 +185,20 @@ class SiteSetting extends Model
     /**
      * @return array<string, mixed>
      */
+    public function websiteSchema(): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => $this->site_name,
+            'alternateName' => "{$this->site_name} ID",
+            'url' => route('home'),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     public function localBusinessSchema(): array
     {
         return [
@@ -231,6 +245,10 @@ class SiteSetting extends Model
 
     private function faviconMime(): string
     {
+        if (! $this->favicon_path) {
+            return 'image/svg+xml';
+        }
+
         return match (strtolower(pathinfo((string) $this->favicon_path, PATHINFO_EXTENSION))) {
             'svg' => 'image/svg+xml',
             'png' => 'image/png',

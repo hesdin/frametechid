@@ -49,7 +49,7 @@ class SiteAssetController extends Controller
     {
         $path = match ($asset) {
             'logo' => public_path('images/landing/logo-frametech.png'),
-            default => public_path('favicon.ico'),
+            default => public_path('favicon.svg'),
         };
 
         if (! file_exists($path)) {

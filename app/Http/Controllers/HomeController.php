@@ -29,6 +29,7 @@ class HomeController extends Controller
                 'web developer makassar',
             ],
             [
+                $siteSetting->websiteSchema(),
                 $siteSetting->localBusinessSchema(),
                 [
                     '@context' => 'https://schema.org',

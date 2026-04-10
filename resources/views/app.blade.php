@@ -30,18 +30,19 @@
             }
         </style>
 
-        <title inertia>{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Laravel')) }}</title>
+        <title inertia>{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Frametech')) }}</title>
 
         <meta name="description" content="{{ $seo['description'] ?? '' }}">
         <meta name="keywords" content="{{ implode(', ', $seo['keywords'] ?? []) }}">
         <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Laravel')) }}">
+        <meta property="og:site_name" content="{{ $siteSettings['siteName'] ?? config('app.name', 'Frametech') }}">
+        <meta property="og:title" content="{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Frametech')) }}">
         <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
         <meta property="og:url" content="{{ $seo['canonical'] ?? url()->current() }}">
         <meta property="og:image" content="{{ $seo['ogImage'] ?? ($siteSettings['logoUrl'] ?? '') }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Laravel')) }}">
+        <meta name="twitter:title" content="{{ $seo['title'] ?? ($siteSettings['siteName'] ?? config('app.name', 'Frametech')) }}">
         <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
         <meta name="twitter:image" content="{{ $seo['ogImage'] ?? ($siteSettings['logoUrl'] ?? '') }}">
 

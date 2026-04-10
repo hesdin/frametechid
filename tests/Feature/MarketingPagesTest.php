@@ -45,6 +45,8 @@ test('marketing pages render cms driven content and seo metadata', function () {
         ->assertSuccessful()
         ->assertSee('application/ld+json', false)
         ->assertSee('jasa pembuatan aplikasi makassar', false)
+        ->assertSee('property="og:site_name" content="Frametech"', false)
+        ->assertSee('"@type":"WebSite"', false)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Landing')
             ->has('featuredServices')
