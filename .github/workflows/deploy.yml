@@ -7,8 +7,8 @@ on:
       - main
 
 concurrency:
-  group: production-deploy
-  cancel-in-progress: false
+  group: production-deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
