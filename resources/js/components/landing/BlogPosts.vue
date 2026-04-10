@@ -52,6 +52,21 @@ defineProps<{
                         >
                             {{ post.title }}
                         </h2>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span
+                                v-if="post.category"
+                                class="rounded-full bg-[#eef5fb] px-3 py-1 text-[12px] font-semibold text-[#2177b8]"
+                            >
+                                {{ post.category }}
+                            </span>
+                            <span
+                                v-for="tag in post.tags"
+                                :key="tag"
+                                class="rounded-full bg-[#fff4de] px-3 py-1 text-[12px] font-semibold text-[#de8a00]"
+                            >
+                                {{ tag }}
+                            </span>
+                        </div>
                         <p class="mt-4 text-[15px] text-[#8a90a7]">
                             {{ post.publishedAt }}
                         </p>

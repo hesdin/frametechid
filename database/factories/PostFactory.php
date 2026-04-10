@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\BlogCategory;
+use App\Models\BlogTag;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +25,7 @@ class PostFactory extends Factory
 
         return [
             'author_id' => User::factory(),
+            'category_id' => BlogCategory::factory(),
             'title' => $title,
             'slug' => Str::slug($title),
             'excerpt' => fake()->realText(180),
@@ -37,6 +40,9 @@ class PostFactory extends Factory
                 ]),
             ),
             'status' => 'draft',
+            'seo_title' => "{$title} | Blog Frametech",
+            'seo_description' => fake()->text(155),
+            'seo_keywords' => implode(', ', fake()->words(4)),
             'published_at' => null,
         ];
     }
@@ -47,5 +53,16 @@ class PostFactory extends Factory
             'status' => 'published',
             'published_at' => now()->subDays(fake()->numberBetween(1, 30)),
         ]);
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Post $post): void {
+            $tags = BlogTag::query()->inRandomOrder()->limit(fake()->numberBetween(1, 3))->pluck('id');
+
+            if ($tags->isNotEmpty()) {
+                $post->tags()->syncWithoutDetaching($tags->all());
+            }
+        });
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\BlogCategory;
+use App\Models\BlogTag;
 use App\Models\Post;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -26,10 +28,19 @@ test('blog page only shows published posts', function () {
 });
 
 test('published blog posts can be viewed publicly', function () {
+    $category = BlogCategory::factory()->create([
+        'name' => 'SEO Lokal Makassar',
+    ]);
+    $tag = BlogTag::factory()->create([
+        'name' => 'Makassar',
+    ]);
+
     $post = Post::factory()->published()->create([
         'title' => 'Artikel Publik',
         'slug' => 'artikel-publik',
+        'category_id' => $category->id,
     ]);
+    $post->tags()->sync([$tag->id]);
 
     $this->get(route('blog.show', $post->slug))
         ->assertSuccessful()
@@ -37,6 +48,8 @@ test('published blog posts can be viewed publicly', function () {
             ->component('BlogShow')
             ->where('post.slug', $post->slug)
             ->where('post.title', $post->title)
+            ->where('post.category', 'SEO Lokal Makassar')
+            ->where('post.tags.0', 'Makassar')
         );
 });
 

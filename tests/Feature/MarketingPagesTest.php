@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\FaqItem;
 use App\Models\PortfolioItem;
 use App\Models\PricingPlan;
 use App\Models\Service;
 use App\Models\SiteSetting;
+use App\Models\Testimonial;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('marketing pages render cms driven content and seo metadata', function () {
@@ -36,6 +38,9 @@ test('marketing pages render cms driven content and seo metadata', function () {
         'sort_order' => 1,
     ]);
 
+    Testimonial::factory()->create();
+    FaqItem::factory()->create();
+
     $this->get(route('home'))
         ->assertSuccessful()
         ->assertSee('application/ld+json', false)
@@ -44,6 +49,8 @@ test('marketing pages render cms driven content and seo metadata', function () {
             ->component('Landing')
             ->has('featuredServices')
             ->has('featuredPortfolioItems')
+            ->has('testimonials')
+            ->has('faqs')
             ->has('seo')
         );
 

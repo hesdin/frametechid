@@ -13,11 +13,19 @@ import ServicesGrid from '@/components/landing/ServicesGrid.vue';
 import Testimonials from '@/components/landing/Testimonials.vue';
 import WhyChoose from '@/components/landing/WhyChoose.vue';
 import LandingLayout from '@/layouts/LandingLayout.vue';
-import type { PageSeo, PublicPortfolioItem, PublicService } from '@/types';
+import type {
+    PageSeo,
+    PublicFaqItem,
+    PublicPortfolioItem,
+    PublicService,
+    PublicTestimonial,
+} from '@/types';
 
 defineProps<{
     featuredServices: PublicService[];
     featuredPortfolioItems: PublicPortfolioItem[];
+    testimonials: PublicTestimonial[];
+    faqs: PublicFaqItem[];
     seo: PageSeo;
 }>();
 </script>
@@ -49,8 +57,12 @@ defineProps<{
             />
             <Portfolio :projects="featuredPortfolioItems" theme="brand" />
             <ProcessSteps theme="brand" />
-            <Testimonials background-class="bg-[#f5f9fd]" theme="brand" />
-            <Faq />
+            <Testimonials
+                :items="testimonials"
+                background-class="bg-[#f5f9fd]"
+                theme="brand"
+            />
+            <Faq :items="faqs" />
             <CTA theme="brand" />
         </main>
         <Footer theme="brand" />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Quote } from 'lucide-vue-next';
 import { computed } from 'vue';
+import type { PublicTestimonial } from '@/types';
 
 const props = withDefaults(
     defineProps<{
@@ -9,6 +10,7 @@ const props = withDefaults(
         description?: string;
         backgroundClass?: string;
         theme?: 'blue' | 'red' | 'brand';
+        items?: PublicTestimonial[];
     }>(),
     {
         sectionId: 'testimoni',
@@ -23,24 +25,27 @@ const props = withDefaults(
 const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
 
-const testimonials = [
+const defaultTestimonials: PublicTestimonial[] = [
     {
         quote: 'Tim Frametech mampu mengeksekusi ide yang kami inginkan dengan sangat baik. Website perusahaan kami menjadi sangat jelas dan tentunya menarik. Frametech adalah solusi tepat untuk seluruh UMKM di Indonesia, Very Recommended!',
         name: 'Jordan Sasmito',
         role: 'Co-Founder Coral Cafe Penida',
         avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=220&q=80',
+        rating: 5,
     },
     {
         quote: 'Website yang dibangun oleh Frametech berhasil merepresentasikan brand kami dengan baik. Tim Frametech sangat komunikatif, memahami kebutuhan kami, dan hasil akhirnya melebihi ekspektasi. Highly recommended!',
         name: 'Reinaldy Lamdjani',
         role: 'Founder Ruang Kopi',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=220&q=80',
+        rating: 5,
     },
     {
         quote: 'Saya telah bekerja sama dengan Frametech dan terkesan dengan kualitas dan perhatian mereka terhadap detail. Tim Frametech punya kemampuan luar biasa dalam membuat website yang menarik secara visual sekaligus mudah digunakan.',
         name: 'Ahmed Noor Khan',
         role: 'Founder Azura Network',
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=220&q=80',
+        rating: 5,
     },
 ];
 </script>
@@ -59,7 +64,7 @@ const testimonials = [
             </div>
 
             <div class="mt-12 grid gap-6 lg:grid-cols-3">
-                <article v-for="item in testimonials" :key="item.name" :class="[
+                <article v-for="item in props.items?.length ? props.items : defaultTestimonials" :key="item.name" :class="[
                     'rounded-[26px] bg-white px-8 py-9',
                     isBrandTheme
                         ? 'border border-[#dce8f4]'
@@ -73,6 +78,9 @@ const testimonials = [
                         " />
                     <p class="mt-5 text-[14px] leading-[1.75] text-[#3b4159] md:text-[15px]">
                         {{ item.quote }}
+                    </p>
+                    <p class="mt-5 text-[13px] font-semibold tracking-[0.16em] text-[#de8a00] uppercase">
+                        {{ '★'.repeat(item.rating) }}
                     </p>
                     <div class="mt-8 flex items-center gap-4">
                         <img :src="item.avatar" :alt="item.name" class="h-[56px] w-[56px] rounded-full object-cover" />

@@ -73,6 +73,7 @@ function copyArticleUrl(event: MouseEvent): void {
 
 <template>
     <Head :title="`${post.title} | Frametech`">
+        <meta name="description" :content="post.excerpt" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
         <link
@@ -107,6 +108,21 @@ function copyArticleUrl(event: MouseEvent): void {
                             >
                                 {{ post.title }}
                             </h1>
+                            <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
+                                <span
+                                    v-if="post.category"
+                                    class="rounded-full bg-[#eef5fb] px-3 py-1 text-[12px] font-semibold text-[#2177b8]"
+                                >
+                                    {{ post.category }}
+                                </span>
+                                <span
+                                    v-for="tag in post.tags"
+                                    :key="tag"
+                                    class="rounded-full bg-[#fff4de] px-3 py-1 text-[12px] font-semibold text-[#de8a00]"
+                                >
+                                    {{ tag }}
+                                </span>
+                            </div>
                             <p class="mt-4 text-[15px] text-[#8a90a7]">
                                 {{ post.publishedAt }}
                             </p>
@@ -196,6 +212,12 @@ function copyArticleUrl(event: MouseEvent): void {
                                     >
                                         <p class="text-[13px] text-[#8a90a7]">
                                             {{ item.publishedAt }}
+                                        </p>
+                                        <p
+                                            v-if="item.category"
+                                            class="mt-2 text-[12px] font-semibold text-[#2177b8]"
+                                        >
+                                            {{ item.category }}
                                         </p>
                                         <p
                                             class="mt-2 text-[16px] leading-[1.55] font-semibold text-[#2f334e]"

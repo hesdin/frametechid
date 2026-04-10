@@ -4,11 +4,13 @@ import PostController from '@/actions/App/Http/Controllers/Cms/PostController';
 import PostEditor from '@/components/blog/PostEditor.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, SelectOption } from '@/types';
 import type { CmsEditablePost } from '@/types/blog';
 
 defineProps<{
     post: CmsEditablePost;
+    categories: SelectOption[];
+    tags: SelectOption[];
 }>();
 
 const page = usePage();
@@ -36,6 +38,8 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class="flex flex-1 flex-col gap-6 p-4 md:p-6">
             <PostEditor
                 :post="post"
+                :categories="categories"
+                :tags="tags"
                 mode="create"
                 :flash-message="page.props.flash?.success"
                 :cancel-href="PostController.index().url"

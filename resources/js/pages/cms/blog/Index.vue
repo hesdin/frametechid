@@ -175,6 +175,15 @@ function destroyPost(post: CmsPostListItem): void {
                                 >
                                     <span>Slug: /blog/{{ post.slug }}</span>
                                     <span>Author: {{ post.author }}</span>
+                                    <span v-if="post.category">
+                                        Kategori: {{ post.category }}
+                                    </span>
+                                    <span v-if="post.tags.length > 0">
+                                        Tag: {{ post.tags.join(', ') }}
+                                    </span>
+                                    <span>
+                                        {{ post.hasSeo ? 'SEO siap' : 'SEO belum lengkap' }}
+                                    </span>
                                     <span v-if="post.publishedAt">
                                         Publish: {{ post.publishedAt }}
                                     </span>

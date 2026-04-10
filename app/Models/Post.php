@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
@@ -16,12 +17,16 @@ class Post extends Model
      */
     protected $fillable = [
         'author_id',
+        'category_id',
         'title',
         'slug',
         'excerpt',
         'content',
         'cover_image',
         'status',
+        'seo_title',
+        'seo_description',
+        'seo_keywords',
         'published_at',
     ];
 
@@ -38,6 +43,17 @@ class Post extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(BlogTag::class, 'blog_post_tag')
+            ->withTimestamps();
     }
 
     public function scopePublished(Builder $query): void

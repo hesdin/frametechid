@@ -16,6 +16,9 @@ export type CmsPostListItem = {
     publishedAt: string | null;
     updatedAt: string;
     author: string;
+    category: string | null;
+    tags: string[];
+    hasSeo: boolean;
 };
 
 export type CmsEditablePost = {
@@ -26,6 +29,11 @@ export type CmsEditablePost = {
     content: string;
     coverImage: string;
     status: PostStatus;
+    categoryId: number | null;
+    tagIds: number[];
+    seoTitle: string;
+    seoDescription: string;
+    seoKeywords: string;
     publishedAt?: string | null;
     updatedAt?: string | null;
 };
@@ -37,6 +45,8 @@ export type PublicBlogPost = {
     excerpt: string;
     coverImage: string | null;
     publishedAt: string | null;
+    category: string | null;
+    tags: string[];
 };
 
 export type PublicBlogDetail = PublicBlogPost & {

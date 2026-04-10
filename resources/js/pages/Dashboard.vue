@@ -2,16 +2,22 @@
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import {
     ArrowRight,
+    CircleHelp,
     Layers3,
+    MessageSquareQuote,
     Newspaper,
     PackageSearch,
     PanelsTopLeft,
     PenSquare,
+    PhoneCall,
 } from 'lucide-vue-next';
+import FaqItemController from '@/actions/App/Http/Controllers/Cms/FaqItemController';
+import LeadController from '@/actions/App/Http/Controllers/Cms/LeadController';
 import PortfolioItemController from '@/actions/App/Http/Controllers/Cms/PortfolioItemController';
 import PostController from '@/actions/App/Http/Controllers/Cms/PostController';
 import PricingPlanController from '@/actions/App/Http/Controllers/Cms/PricingPlanController';
 import ServiceController from '@/actions/App/Http/Controllers/Cms/ServiceController';
+import TestimonialController from '@/actions/App/Http/Controllers/Cms/TestimonialController';
 import FlashMessage from '@/components/FlashMessage.vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
@@ -27,6 +33,9 @@ defineProps<{
         services: number;
         pricingPlans: number;
         portfolioItems: number;
+        testimonials: number;
+        faqs: number;
+        newLeads: number;
     };
     recentPosts: Array<{
         id: number;
@@ -83,7 +92,7 @@ const page = usePage();
                 </div>
             </div>
 
-            <div class="grid gap-4 md:grid-cols-3">
+            <div class="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
                 <Card>
                     <CardHeader class="space-y-1">
                         <CardTitle class="text-sm font-medium text-muted-foreground">
@@ -159,13 +168,49 @@ const page = usePage();
                         </p>
                     </CardContent>
                 </Card>
+                <Card>
+                    <CardHeader class="space-y-1">
+                        <CardTitle class="text-sm font-medium text-muted-foreground">
+                            Testimoni
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent class="pt-0">
+                        <p class="text-3xl font-semibold tracking-tight text-rose-600">
+                            {{ contentStats.testimonials }}
+                        </p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="space-y-1">
+                        <CardTitle class="text-sm font-medium text-muted-foreground">
+                            FAQ
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent class="pt-0">
+                        <p class="text-3xl font-semibold tracking-tight text-cyan-600">
+                            {{ contentStats.faqs }}
+                        </p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="space-y-1">
+                        <CardTitle class="text-sm font-medium text-muted-foreground">
+                            Leads baru
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent class="pt-0">
+                        <p class="text-3xl font-semibold tracking-tight text-emerald-600">
+                            {{ contentStats.newLeads }}
+                        </p>
+                    </CardContent>
+                </Card>
             </div>
 
             <Card class="gap-0 overflow-hidden py-0">
                 <CardHeader class="border-b bg-muted/20">
                     <CardTitle>Shortcut konten marketing</CardTitle>
                 </CardHeader>
-                <CardContent class="grid gap-4 p-6 md:grid-cols-3">
+                <CardContent class="grid gap-4 p-6 md:grid-cols-2 xl:grid-cols-6">
                     <Button variant="outline" class="justify-between" as-child>
                         <Link :href="ServiceController.index()">
                             Manage services
@@ -182,6 +227,24 @@ const page = usePage();
                         <Link :href="PortfolioItemController.index()">
                             Manage portfolio
                             <PanelsTopLeft class="size-4" />
+                        </Link>
+                    </Button>
+                    <Button variant="outline" class="justify-between" as-child>
+                        <Link :href="TestimonialController.index()">
+                            Testimonials
+                            <MessageSquareQuote class="size-4" />
+                        </Link>
+                    </Button>
+                    <Button variant="outline" class="justify-between" as-child>
+                        <Link :href="FaqItemController.index()">
+                            FAQ
+                            <CircleHelp class="size-4" />
+                        </Link>
+                    </Button>
+                    <Button variant="outline" class="justify-between" as-child>
+                        <Link :href="LeadController.index()">
+                            Leads inbox
+                            <PhoneCall class="size-4" />
                         </Link>
                     </Button>
                 </CardContent>

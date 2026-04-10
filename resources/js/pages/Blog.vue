@@ -15,6 +15,10 @@ defineProps<{
 
 <template>
     <Head title="Blog | Frametech">
+        <meta
+            name="description"
+            content="Artikel seputar jasa pembuatan aplikasi, website bisnis, dan SEO lokal Makassar dari Frametech."
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             rel="preconnect"

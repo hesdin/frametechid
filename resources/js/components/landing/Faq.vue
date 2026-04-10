@@ -1,9 +1,12 @@
 <script setup lang="ts">
-withDefaults(
+import type { PublicFaqItem } from '@/types';
+
+const props = withDefaults(
     defineProps<{
         sectionId?: string;
         title?: string;
         description?: string;
+        items?: PublicFaqItem[];
     }>(),
     {
         sectionId: 'faq',
@@ -13,7 +16,7 @@ withDefaults(
     },
 );
 
-const faqs = [
+const defaultFaqs: PublicFaqItem[] = [
     {
         question: 'Berapa lama proses pembuatan website?',
         answer: 'Rata-rata 5 sampai 10 hari kerja setelah konten dan kebutuhan utama disepakati. Untuk website dengan fitur lebih kompleks, estimasi akan disampaikan di awal proyek.',
@@ -50,20 +53,20 @@ const faqs = [
 </script>
 
 <template>
-    <section :id="sectionId" class="bg-[linear-gradient(180deg,#ffffff_0%,#f5f9fd_100%)] py-20 md:py-24">
+    <section :id="props.sectionId" class="bg-[linear-gradient(180deg,#ffffff_0%,#f5f9fd_100%)] py-20 md:py-24">
         <div
             class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]">
             <div class="mx-auto max-w-[880px] text-center">
                 <h2 class="text-[18px] leading-tight font-bold tracking-[-0.02em] text-[#2b2f45] md:text-[30px]">
-                    {{ title }}
+                    {{ props.title }}
                 </h2>
                 <p class="mt-4 text-[15px] leading-7 text-[#787c92] md:text-base">
-                    {{ description }}
+                    {{ props.description }}
                 </p>
             </div>
 
             <div class="mt-10 grid gap-6">
-                <details v-for="(item, index) in faqs" :key="item.question" :open="index === 0"
+                <details v-for="(item, index) in props.items?.length ? props.items : defaultFaqs" :key="item.question" :open="index === 0"
                     class="group rounded-[16px] border border-[#dbe8f3] bg-white/90 px-6 py-5">
                     <summary
                         class="flex cursor-pointer list-none items-center justify-between gap-6 text-[16px] font-semibold text-[#2c3048] md:text-[17px]">

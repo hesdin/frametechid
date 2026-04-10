@@ -30,6 +30,9 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             PricingPlanSeeder::class,
             PortfolioItemSeeder::class,
+            TestimonialSeeder::class,
+            FaqItemSeeder::class,
+            BlogTaxonomySeeder::class,
             PostSeeder::class,
         ]);
     }

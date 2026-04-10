@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\BlogCategory;
+use App\Models\BlogTag;
 use App\Models\Post;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +22,7 @@ class PostController extends Controller
     {
         $posts = Post::query()
             ->latest('updated_at')
-            ->with('author:id,name')
+            ->with(['author:id,name', 'category:id,name', 'tags:id,name'])
             ->get();
 
         return Inertia::render('cms/blog/Index', [
@@ -39,6 +41,9 @@ class PostController extends Controller
                 'publishedAt' => $post->published_at?->format('F j, Y'),
                 'updatedAt' => $post->updated_at->diffForHumans(),
                 'author' => $post->author?->name ?? 'Tim '.SiteSetting::current()->site_name,
+                'category' => $post->category?->name,
+                'tags' => $post->tags->pluck('name')->all(),
+                'hasSeo' => filled($post->seo_title) || filled($post->seo_description),
             ])->all(),
         ]);
     }
@@ -49,14 +54,11 @@ class PostController extends Controller
     public function create(): Response
     {
         return Inertia::render('cms/blog/Create', [
-            'post' => [
-                'title' => '',
-                'slug' => '',
-                'excerpt' => '',
-                'content' => '',
-                'coverImage' => '',
+            'post' => $this->postFormData(new Post([
                 'status' => 'draft',
-            ],
+            ])),
+            'categories' => $this->categories(),
+            'tags' => $this->tags(),
         ]);
     }
 
@@ -66,9 +68,10 @@ class PostController extends Controller
     public function store(StorePostRequest $request): RedirectResponse
     {
         $post = Post::query()->create([
-            ...$this->preparePayload($request->validated()),
+            ...$this->preparePayload($request->safe()->except('tag_ids')),
             'author_id' => $request->user()->id,
         ]);
+        $post->tags()->sync($request->safe()->collect()->get('tag_ids', []));
 
         return to_route('cms.blog.edit', $post)
             ->with('success', 'Artikel blog berhasil dibuat.');
@@ -87,18 +90,12 @@ class PostController extends Controller
      */
     public function edit(Post $post): Response
     {
+        $post->loadMissing('tags:id,name');
+
         return Inertia::render('cms/blog/Edit', [
-            'post' => [
-                'id' => $post->id,
-                'title' => $post->title,
-                'slug' => $post->slug,
-                'excerpt' => $post->excerpt,
-                'content' => $post->content,
-                'coverImage' => $post->cover_image ?? '',
-                'status' => $post->status,
-                'publishedAt' => $post->published_at?->format('F j, Y H:i'),
-                'updatedAt' => $post->updated_at->diffForHumans(),
-            ],
+            'post' => $this->postFormData($post),
+            'categories' => $this->categories(),
+            'tags' => $this->tags(),
         ]);
     }
 
@@ -107,7 +104,8 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post): RedirectResponse
     {
-        $post->update($this->preparePayload($request->validated(), $post));
+        $post->update($this->preparePayload($request->safe()->except('tag_ids'), $post));
+        $post->tags()->sync($request->safe()->collect()->get('tag_ids', []));
 
         return to_route('cms.blog.edit', $post)
             ->with('success', 'Artikel blog berhasil diperbarui.');
@@ -137,6 +135,57 @@ class PostController extends Controller
             'published_at' => $shouldPublish
                 ? ($post?->published_at ?? now())
                 : null,
+        ];
+    }
+
+    /**
+     * @return array<int, array{id:int,label:string}>
+     */
+    protected function categories(): array
+    {
+        return BlogCategory::query()
+            ->orderBy('name')
+            ->get()
+            ->map(fn (BlogCategory $category): array => [
+                'id' => $category->id,
+                'label' => $category->name,
+            ])->all();
+    }
+
+    /**
+     * @return array<int, array{id:int,label:string}>
+     */
+    protected function tags(): array
+    {
+        return BlogTag::query()
+            ->orderBy('name')
+            ->get()
+            ->map(fn (BlogTag $tag): array => [
+                'id' => $tag->id,
+                'label' => $tag->name,
+            ])->all();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function postFormData(Post $post): array
+    {
+        return [
+            'id' => $post->id,
+            'title' => $post->title ?? '',
+            'slug' => $post->slug ?? '',
+            'excerpt' => $post->excerpt ?? '',
+            'content' => $post->content ?? '',
+            'coverImage' => $post->cover_image ?? '',
+            'status' => $post->status ?? 'draft',
+            'categoryId' => $post->category_id,
+            'tagIds' => $post->relationLoaded('tags') ? $post->tags->pluck('id')->all() : [],
+            'seoTitle' => $post->seo_title ?? '',
+            'seoDescription' => $post->seo_description ?? '',
+            'seoKeywords' => $post->seo_keywords ?? '',
+            'publishedAt' => $post->published_at?->format('F j, Y H:i'),
+            'updatedAt' => $post->exists ? $post->updated_at?->diffForHumans() : null,
         ];
     }
 }

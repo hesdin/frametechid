@@ -2,18 +2,29 @@
 import { Link } from '@inertiajs/vue3';
 import {
     BookOpen,
+    Boxes,
+    CircleHelp,
     FilePenLine,
     FolderGit2,
     LayoutGrid,
     Layers3,
+    MessageSquareQuote,
+    MessagesSquare,
     PackageSearch,
     PanelsTopLeft,
+    PhoneCall,
     Settings2,
 } from 'lucide-vue-next';
+import BlogCategoryController from '@/actions/App/Http/Controllers/Cms/BlogCategoryController';
+import BlogTagController from '@/actions/App/Http/Controllers/Cms/BlogTagController';
+import FaqItemController from '@/actions/App/Http/Controllers/Cms/FaqItemController';
+import LeadController from '@/actions/App/Http/Controllers/Cms/LeadController';
+import MediaAssetController from '@/actions/App/Http/Controllers/Cms/MediaAssetController';
 import PortfolioItemController from '@/actions/App/Http/Controllers/Cms/PortfolioItemController';
 import PostController from '@/actions/App/Http/Controllers/Cms/PostController';
 import PricingPlanController from '@/actions/App/Http/Controllers/Cms/PricingPlanController';
 import ServiceController from '@/actions/App/Http/Controllers/Cms/ServiceController';
+import TestimonialController from '@/actions/App/Http/Controllers/Cms/TestimonialController';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -59,6 +70,42 @@ const mainNavItems: NavItem[] = [
         title: 'Portfolio',
         href: PortfolioItemController.index(),
         icon: PanelsTopLeft,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Testimonials',
+        href: TestimonialController.index(),
+        icon: MessageSquareQuote,
+        matchSubpaths: true,
+    },
+    {
+        title: 'FAQ',
+        href: FaqItemController.index(),
+        icon: CircleHelp,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Leads Inbox',
+        href: LeadController.index(),
+        icon: PhoneCall,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Blog Categories',
+        href: BlogCategoryController.index(),
+        icon: MessagesSquare,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Blog Tags',
+        href: BlogTagController.index(),
+        icon: Boxes,
+        matchSubpaths: true,
+    },
+    {
+        title: 'Media Library',
+        href: MediaAssetController.index(),
+        icon: FolderGit2,
         matchSubpaths: true,
     },
     {

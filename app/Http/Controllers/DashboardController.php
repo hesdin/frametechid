@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FaqItem;
+use App\Models\Lead;
 use App\Models\PortfolioItem;
 use App\Models\Post;
 use App\Models\PricingPlan;
 use App\Models\Service;
 use App\Models\SiteSetting;
+use App\Models\Testimonial;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,6 +36,9 @@ class DashboardController extends Controller
                 'services' => Service::query()->count(),
                 'pricingPlans' => PricingPlan::query()->count(),
                 'portfolioItems' => PortfolioItem::query()->count(),
+                'testimonials' => Testimonial::query()->count(),
+                'faqs' => FaqItem::query()->count(),
+                'newLeads' => Lead::query()->where('status', Lead::STATUS_NEW)->count(),
             ],
             'recentPosts' => $posts->map(fn (Post $post): array => [
                 'id' => $post->id,

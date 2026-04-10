@@ -18,6 +18,13 @@ const fallbackSiteSettings: SiteSettings = {
     tiktokUrl: null,
     youtubeUrl: null,
     copyrightName: 'PT. Global Creative Labs',
+    seoTitle: 'Frametech | Jasa Pembuatan Website & Aplikasi Makassar',
+    seoDescription:
+        'Frametech melayani jasa pembuatan website dan aplikasi untuk bisnis di Makassar.',
+    seoKeywords: 'jasa pembuatan aplikasi makassar, jasa website makassar',
+    seoLocality: 'Makassar',
+    seoRegion: 'Sulawesi Selatan',
+    seoFocusKeyword: 'Jasa Pembuatan Aplikasi Makassar',
     logoUrl: '/images/landing/logo-frametech.png',
     faviconUrl: '/favicon.ico',
 };

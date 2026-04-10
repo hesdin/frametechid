@@ -45,6 +45,7 @@ class UpdatePostRequest extends FormRequest
     {
         $this->merge([
             'slug' => Str::slug((string) $this->input('slug', $this->string('title')->toString())),
+            'tag_ids' => array_values(array_filter((array) $this->input('tag_ids', []))),
         ]);
     }
 }

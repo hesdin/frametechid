@@ -14,6 +14,8 @@ import type { CmsEditablePost } from '@/types/blog';
 const props = defineProps<{
     mode: 'create' | 'edit';
     post: CmsEditablePost;
+    categories: Array<{ id: number; label: string }>;
+    tags: Array<{ id: number; label: string }>;
     flashMessage?: string | null;
     cancelHref: string;
 }>();
@@ -25,6 +27,11 @@ const form = useForm({
     content: props.post.content,
     cover_image: props.post.coverImage,
     status: props.post.status,
+    category_id: props.post.categoryId,
+    tag_ids: props.post.tagIds,
+    seo_title: props.post.seoTitle,
+    seo_description: props.post.seoDescription,
+    seo_keywords: props.post.seoKeywords,
 });
 
 const syncSlugWithTitle = ref(
@@ -165,6 +172,10 @@ function submit(): void {
                             v-model="form.cover_image"
                             placeholder="https://images.unsplash.com/..."
                         />
+                        <p class="text-xs text-muted-foreground">
+                            Bisa ambil URL dari menu Media Library jika asset
+                            sudah diunggah ke CMS.
+                        </p>
                         <InputError :message="form.errors.cover_image" />
                     </div>
                 </CardContent>
@@ -177,6 +188,44 @@ function submit(): void {
                     <CardTitle>Publish settings</CardTitle>
                 </CardHeader>
                 <CardContent class="space-y-5 p-6">
+                    <div class="grid gap-2">
+                        <Label for="category_id">Kategori</Label>
+                        <select
+                            id="category_id"
+                            v-model="form.category_id"
+                            class="border-input focus-visible:border-ring focus-visible:ring-ring/50 h-10 rounded-md border bg-transparent px-3 text-sm outline-none focus-visible:ring-[3px]"
+                        >
+                            <option :value="null">Tanpa kategori</option>
+                            <option
+                                v-for="category in categories"
+                                :key="category.id"
+                                :value="category.id"
+                            >
+                                {{ category.label }}
+                            </option>
+                        </select>
+                        <InputError :message="form.errors.category_id" />
+                    </div>
+
+                    <div class="grid gap-3">
+                        <Label>Tag</Label>
+                        <div class="grid gap-2">
+                            <label
+                                v-for="tag in tags"
+                                :key="tag.id"
+                                class="flex items-center gap-3 text-sm"
+                            >
+                                <input
+                                    v-model="form.tag_ids"
+                                    type="checkbox"
+                                    :value="tag.id"
+                                />
+                                {{ tag.label }}
+                            </label>
+                        </div>
+                        <InputError :message="form.errors.tag_ids" />
+                    </div>
+
                     <div class="grid gap-2">
                         <Label for="status">Status</Label>
                         <select
@@ -199,6 +248,14 @@ function submit(): void {
                             <p>Judul: {{ form.title || 'Belum diisi' }}</p>
                             <p>Slug: /blog/{{ form.slug || 'slug-artikel' }}</p>
                             <p>
+                                Kategori:
+                                {{
+                                    categories.find(
+                                        (item) => item.id === form.category_id,
+                                    )?.label || 'Belum dipilih'
+                                }}
+                            </p>
+                            <p>
                                 Cover:
                                 {{
                                     form.cover_image
@@ -219,6 +276,47 @@ function submit(): void {
                         <p v-if="post.updatedAt">
                             Update terakhir: {{ post.updatedAt }}
                         </p>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card class="gap-0 overflow-hidden py-0">
+                <CardHeader class="border-b bg-muted/30">
+                    <CardTitle>SEO artikel</CardTitle>
+                </CardHeader>
+                <CardContent class="space-y-5 p-6">
+                    <div class="grid gap-2">
+                        <Label for="seo_title">SEO title</Label>
+                        <Input
+                            id="seo_title"
+                            v-model="form.seo_title"
+                            placeholder="Judul yang lebih spesifik untuk Google"
+                        />
+                        <InputError :message="form.errors.seo_title" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="seo_description">Meta description</Label>
+                        <textarea
+                            id="seo_description"
+                            v-model="form.seo_description"
+                            :class="textareaClass"
+                            rows="4"
+                            placeholder="Ringkasan yang mendorong klik dari hasil pencarian."
+                        />
+                        <InputError :message="form.errors.seo_description" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="seo_keywords">Keyword SEO</Label>
+                        <textarea
+                            id="seo_keywords"
+                            v-model="form.seo_keywords"
+                            :class="textareaClass"
+                            rows="3"
+                            placeholder="jasa pembuatan aplikasi makassar, website bisnis makassar"
+                        />
+                        <InputError :message="form.errors.seo_keywords" />
                     </div>
                 </CardContent>
             </Card>
