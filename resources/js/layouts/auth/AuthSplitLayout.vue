@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import { Link } from '@inertiajs/vue3';
+import { useSiteSettings } from '@/composables/useSiteSettings';
 import { home } from '@/routes';
-
-const page = usePage();
-const name = page.props.name;
 
 defineProps<{
     title?: string;
     description?: string;
 }>();
+
+const { site } = useSiteSettings();
 </script>
 
 <template>
@@ -24,8 +23,8 @@ defineProps<{
                 :href="home()"
                 class="relative z-20 flex items-center text-lg font-medium"
             >
-                <AppLogoIcon class="mr-2 size-8 fill-current text-white" />
-                {{ name }}
+                <img :src="site.logoUrl" alt="" class="mr-2 h-8 w-8 object-contain" aria-hidden="true" />
+                {{ site.siteName }}
             </Link>
         </div>
         <div class="lg:p-8">

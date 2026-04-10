@@ -10,6 +10,7 @@ import {
     PanelsTopLeft,
     PenSquare,
     PhoneCall,
+    Users,
 } from 'lucide-vue-next';
 import FaqItemController from '@/actions/App/Http/Controllers/Cms/FaqItemController';
 import LeadController from '@/actions/App/Http/Controllers/Cms/LeadController';
@@ -36,6 +37,10 @@ defineProps<{
         testimonials: number;
         faqs: number;
         newLeads: number;
+    };
+    visitorStats: {
+        totalUniqueVisitors: number;
+        uniqueVisitorsToday: number;
     };
     recentPosts: Array<{
         id: number;
@@ -92,7 +97,7 @@ const page = usePage();
                 </div>
             </div>
 
-            <div class="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
+            <div class="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
                 <Card>
                     <CardHeader class="space-y-1">
                         <CardTitle class="text-sm font-medium text-muted-foreground">
@@ -126,6 +131,31 @@ const page = usePage();
                     <CardContent class="pt-0">
                         <p class="text-3xl font-semibold tracking-tight text-amber-600">
                             {{ stats.draftPosts }}
+                        </p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="space-y-1">
+                        <CardTitle class="text-sm font-medium text-muted-foreground">
+                            Pengunjung unik
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent class="pt-0">
+                        <p class="flex items-center gap-2 text-3xl font-semibold tracking-tight text-sky-600">
+                            <Users class="size-5" />
+                            {{ visitorStats.totalUniqueVisitors }}
+                        </p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="space-y-1">
+                        <CardTitle class="text-sm font-medium text-muted-foreground">
+                            Pengunjung hari ini
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent class="pt-0">
+                        <p class="text-3xl font-semibold tracking-tight text-cyan-600">
+                            {{ visitorStats.uniqueVisitorsToday }}
                         </p>
                     </CardContent>
                 </Card>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import {
     Card,
     CardContent,
@@ -8,12 +7,15 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { useSiteSettings } from '@/composables/useSiteSettings';
 import { home } from '@/routes';
 
 defineProps<{
     title?: string;
     description?: string;
 }>();
+
+const { site } = useSiteSettings();
 </script>
 
 <template>
@@ -26,9 +28,7 @@ defineProps<{
                 class="flex items-center gap-2 self-center font-medium"
             >
                 <div class="flex h-9 w-9 items-center justify-center">
-                    <AppLogoIcon
-                        class="size-9 fill-current text-black dark:text-white"
-                    />
+                    <img :src="site.logoUrl" alt="" class="h-9 w-9 object-contain" aria-hidden="true" />
                 </div>
             </Link>
 

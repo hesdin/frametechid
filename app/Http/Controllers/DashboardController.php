@@ -10,6 +10,7 @@ use App\Models\PricingPlan;
 use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\Testimonial;
+use App\Models\Visitor;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -39,6 +40,12 @@ class DashboardController extends Controller
                 'testimonials' => Testimonial::query()->count(),
                 'faqs' => FaqItem::query()->count(),
                 'newLeads' => Lead::query()->where('status', Lead::STATUS_NEW)->count(),
+            ],
+            'visitorStats' => [
+                'totalUniqueVisitors' => Visitor::query()->count(),
+                'uniqueVisitorsToday' => Visitor::query()
+                    ->whereDate('last_visited_at', today())
+                    ->count(),
             ],
             'recentPosts' => $posts->map(fn (Post $post): array => [
                 'id' => $post->id,

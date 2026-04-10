@@ -20,15 +20,19 @@ use App\Http\Controllers\RobotsTxtController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\SiteAssetController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Middleware\TrackUniqueVisitor;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
-Route::get('/layanan', ServicePageController::class)->name('services');
-Route::get('/paket-harga', PricingPageController::class)->name('pricing');
-Route::get('/portofolio', PortfolioPageController::class)->name('portfolio');
-Route::inertia('/tentang-kami', 'About')->name('about');
-Route::get('/blog', [PostController::class, 'index'])->name('blog');
-Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('blog.show');
+Route::middleware(TrackUniqueVisitor::class)->group(function () {
+    Route::get('/', HomeController::class)->name('home');
+    Route::get('/layanan', ServicePageController::class)->name('services');
+    Route::get('/paket-harga', PricingPageController::class)->name('pricing');
+    Route::get('/portofolio', PortfolioPageController::class)->name('portfolio');
+    Route::inertia('/tentang-kami', 'About')->name('about');
+    Route::get('/blog', [PostController::class, 'index'])->name('blog');
+    Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('blog.show');
+});
+
 Route::post('/contact/leads', LeadCaptureController::class)->name('leads.capture');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/robots.txt', RobotsTxtController::class)->name('robots');

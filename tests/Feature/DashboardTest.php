@@ -18,6 +18,7 @@ test('authenticated users can visit the dashboard', function () {
             ->component('Dashboard')
             ->has('stats')
             ->has('contentStats')
+            ->has('visitorStats')
             ->has('recentPosts')
         );
 });
