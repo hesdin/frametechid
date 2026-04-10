@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,17 +14,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $adminEmail = (string) config('seeding.admin.email');
+        $adminName = (string) config('seeding.admin.name');
+        $adminPassword = (string) config('seeding.admin.password');
+
         SiteSetting::query()->updateOrCreate(
             ['id' => 1],
             SiteSetting::defaults(),
         );
 
         User::query()->updateOrCreate(
-            ['email' => 'test@example.com'],
-            User::factory()->make([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ])->toArray(),
+            ['email' => $adminEmail],
+            [
+                'name' => $adminName,
+                'email' => $adminEmail,
+                'email_verified_at' => now(),
+                'password' => Hash::make($adminPassword),
+            ],
         );
 
         $this->call([
