@@ -9,3 +9,11 @@ it('keeps the CTA illustration above overlapping text cards', function (): void 
         ->toContain('class="absolute right-2 bottom-[-10px] z-30 inline-flex min-w-[320px]')
         ->not->toContain('absolute inset-0 z-0 rounded-[34px]');
 });
+
+it('renders dialogs above the sticky landing navbar', function (): void {
+    $overlay = file_get_contents(resource_path('js/components/ui/dialog/DialogOverlay.vue'));
+    $content = file_get_contents(resource_path('js/components/ui/dialog/DialogContent.vue'));
+
+    expect($overlay)->toContain('fixed inset-0 z-[120] bg-black/80');
+    expect($content)->toContain('fixed top-[50%] left-[50%] z-[130] grid w-full');
+});

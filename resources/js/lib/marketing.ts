@@ -7,9 +7,10 @@ import {
     NotebookText,
     School,
     ShoppingCart,
-    Store,
-    type LucideIcon,
+    Store
+    
 } from 'lucide-vue-next';
+import type {LucideIcon} from 'lucide-vue-next';
 
 export const serviceIconMap: Record<string, LucideIcon> = {
     store: Store,

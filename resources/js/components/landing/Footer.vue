@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
 import {
     Facebook,
     Instagram,
@@ -8,7 +9,6 @@ import {
     Youtube,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
 import { useSiteSettings } from '@/composables/useSiteSettings';
 import { about, blog, home, portfolio, pricing, services } from '@/routes';
 import type { MarketingSharedData } from '@/types';

@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { LoaderCircle, MessageCircle, Send } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useSiteSettings } from '@/composables/useSiteSettings';
@@ -27,6 +34,7 @@ const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
 const { site } = useSiteSettings();
 const page = usePage();
+const isLeadModalOpen = ref(false);
 
 const form = useForm({
     name: '',
@@ -46,10 +54,21 @@ const resolvedDescription = computed(
 const textareaClass =
     'min-h-28 rounded-xl border border-white/40 bg-white/90 px-4 py-3 text-sm text-[#2f334e] outline-none transition focus:border-[#2177b8]';
 
+watch(isLeadModalOpen, (isOpen: boolean) => {
+    if (isOpen) {
+        return;
+    }
+
+    form.clearErrors();
+});
+
 function submit(): void {
     form.post(capture(), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+            form.reset();
+            isLeadModalOpen.value = false;
+        },
     });
 }
 </script>
@@ -79,7 +98,7 @@ function submit(): void {
         />
 
         <div
-            class="mx-auto grid w-[min(1280px,calc(100%-1.5rem))] items-start gap-8 py-8 md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))] lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:py-12"
+            class="mx-auto grid w-[min(1280px,calc(100%-1.5rem))] items-center gap-8 py-3 md:w-[min(1280px,calc(100%-2.5rem))] md:py-5 lg:w-[min(1280px,calc(100%-12rem))] lg:grid-cols-[1fr_1.03fr] lg:py-6"
         >
             <div class="relative z-10 max-w-[560px]">
                 <h2
@@ -97,7 +116,7 @@ function submit(): void {
                     <a
                         :href="site.whatsappUrl"
                         :class="[
-                            'inline-flex w-full items-center justify-center gap-3 rounded-[14px] border-2 px-6 py-3.5 text-[15px] leading-none font-semibold text-white transition-transform hover:-translate-y-px sm:w-auto sm:min-w-[250px] sm:text-[16px]',
+                            'inline-flex w-full items-center justify-center gap-3 rounded-[14px] border-2 px-6 py-3.5 text-[15px] leading-none font-semibold text-white transition-transform hover:-translate-y-px sm:w-auto sm:min-w-[360px] sm:text-[16px]',
                             isBrandTheme
                                 ? 'border-[#c97f00] bg-gradient-to-b from-[#eda40f] to-[#d98700] shadow-[inset_0_2px_0_rgba(255,255,255,0.34),0_14px_28px_rgba(214,136,0,0.28)]'
                                 : isRedTheme
@@ -111,123 +130,19 @@ function submit(): void {
                     <Button
                         variant="outline"
                         class="h-auto rounded-[14px] border-[#dce8f4] bg-white/80 px-6 py-3.5 text-[#2f334e]"
-                        as-child
+                        type="button"
+                        @click="isLeadModalOpen = true"
                     >
-                        <Link href="#lead-form">Kirim Brief</Link>
+                        Kirim Brief
                     </Button>
                 </div>
-            </div>
-
-            <div
-                id="lead-form"
-                class="rounded-[28px] border border-[#dce8f4] bg-white/86 p-6 shadow-[0_16px_30px_rgba(31,91,143,0.10)] backdrop-blur"
-            >
-                <p
-                    class="text-[12px] font-semibold tracking-[0.18em] text-[#8f98af] uppercase"
-                >
-                    Contact Inbox
-                </p>
-                <h3
-                    class="mt-3 text-[24px] font-semibold tracking-[-0.02em] text-[#2f334e]"
-                >
-                    Kirim brief singkat
-                </h3>
-                <p class="mt-2 text-[14px] leading-7 text-[#6b7088]">
-                    Isi kebutuhan utama Anda. Data ini akan masuk ke CMS agar tim
-                    bisa follow up lebih rapi.
-                </p>
 
                 <p
                     v-if="page.props.flash?.success"
-                    class="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700"
+                    class="mt-5 max-w-[500px] rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700"
                 >
                     {{ page.props.flash.success }}
                 </p>
-
-                <form class="mt-6 grid gap-4" @submit.prevent="submit">
-                    <div class="grid gap-2">
-                        <Label for="lead_name">Nama</Label>
-                        <Input id="lead_name" v-model="form.name" placeholder="Nama Anda" />
-                        <InputError :message="form.errors.name" />
-                    </div>
-
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <div class="grid gap-2">
-                            <Label for="lead_business_name">Nama bisnis</Label>
-                            <Input
-                                id="lead_business_name"
-                                v-model="form.business_name"
-                                placeholder="Opsional"
-                            />
-                            <InputError :message="form.errors.business_name" />
-                        </div>
-                        <div class="grid gap-2">
-                            <Label for="lead_phone_number">WhatsApp / telepon</Label>
-                            <Input
-                                id="lead_phone_number"
-                                v-model="form.phone_number"
-                                placeholder="08xxxxxxxxxx"
-                            />
-                            <InputError :message="form.errors.phone_number" />
-                        </div>
-                    </div>
-
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <div class="grid gap-2">
-                            <Label for="lead_email">Email</Label>
-                            <Input
-                                id="lead_email"
-                                v-model="form.email"
-                                type="email"
-                                placeholder="Opsional"
-                            />
-                            <InputError :message="form.errors.email" />
-                        </div>
-                        <div class="grid gap-2">
-                            <Label for="lead_service_interest">Kebutuhan utama</Label>
-                            <select
-                                id="lead_service_interest"
-                                v-model="form.service_interest"
-                                class="h-10 rounded-xl border border-white/40 bg-white/90 px-4 text-sm text-[#2f334e] outline-none transition focus:border-[#2177b8]"
-                            >
-                                <option value="Jasa Pembuatan Aplikasi Web">
-                                    Jasa Pembuatan Aplikasi Web
-                                </option>
-                                <option value="Website Company Profile">
-                                    Website Company Profile
-                                </option>
-                                <option value="Landing Page Promosi">
-                                    Landing Page Promosi
-                                </option>
-                                <option value="SEO Lokal Makassar">
-                                    SEO Lokal Makassar
-                                </option>
-                            </select>
-                            <InputError :message="form.errors.service_interest" />
-                        </div>
-                    </div>
-
-                    <div class="grid gap-2">
-                        <Label for="lead_message">Brief proyek</Label>
-                        <textarea
-                            id="lead_message"
-                            v-model="form.message"
-                            :class="textareaClass"
-                            placeholder="Ceritakan bisnis Anda, fitur yang dibutuhkan, dan target wilayah seperti Makassar."
-                        />
-                        <InputError :message="form.errors.message" />
-                    </div>
-
-                    <Button
-                        :disabled="form.processing"
-                        class="mt-2 h-auto justify-center rounded-[14px] border-[#c97f00] bg-gradient-to-b from-[#eda40f] to-[#d98700] px-6 py-3.5 text-[15px] font-semibold text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.34),0_14px_28px_rgba(214,136,0,0.28)]"
-                        type="submit"
-                    >
-                        <LoaderCircle v-if="form.processing" class="size-4 animate-spin" />
-                        <Send v-else class="size-4" />
-                        Kirim ke CMS
-                    </Button>
-                </form>
             </div>
 
             <div
@@ -314,5 +229,118 @@ function submit(): void {
                 </div>
             </div>
         </div>
+
+        <Dialog :open="isLeadModalOpen" @update:open="isLeadModalOpen = $event">
+            <DialogContent class="max-w-[calc(100%-1.5rem)] rounded-[28px] border-[#dce8f4] bg-[linear-gradient(180deg,#f9fcff_0%,#ffffff_100%)] p-0 shadow-[0_24px_60px_rgba(31,91,143,0.18)] sm:max-w-2xl">
+                <div class="rounded-[28px] border border-white/70 p-6 md:p-8">
+                    <DialogHeader class="space-y-3">
+                        <p class="text-[12px] font-semibold tracking-[0.18em] text-[#8f98af] uppercase">
+                            Contact Inbox
+                        </p>
+                        <DialogTitle class="text-[28px] tracking-[-0.02em] text-[#2f334e]">
+                            Kirim brief singkat
+                        </DialogTitle>
+                        <DialogDescription class="max-w-[560px] text-[15px] leading-7 text-[#6b7088]">
+                            Isi kebutuhan utama Anda. Data ini akan masuk ke CMS agar tim bisa follow up lebih rapi.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <form class="mt-8 grid gap-4" @submit.prevent="submit">
+                        <div class="grid gap-2">
+                            <Label for="lead_name">Nama</Label>
+                            <Input id="lead_name" v-model="form.name" placeholder="Nama Anda" />
+                            <InputError :message="form.errors.name" />
+                        </div>
+
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="grid gap-2">
+                                <Label for="lead_business_name">Nama bisnis</Label>
+                                <Input
+                                    id="lead_business_name"
+                                    v-model="form.business_name"
+                                    placeholder="Opsional"
+                                />
+                                <InputError :message="form.errors.business_name" />
+                            </div>
+                            <div class="grid gap-2">
+                                <Label for="lead_phone_number">WhatsApp / telepon</Label>
+                                <Input
+                                    id="lead_phone_number"
+                                    v-model="form.phone_number"
+                                    placeholder="08xxxxxxxxxx"
+                                />
+                                <InputError :message="form.errors.phone_number" />
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="grid gap-2">
+                                <Label for="lead_email">Email</Label>
+                                <Input
+                                    id="lead_email"
+                                    v-model="form.email"
+                                    type="email"
+                                    placeholder="Opsional"
+                                />
+                                <InputError :message="form.errors.email" />
+                            </div>
+                            <div class="grid gap-2">
+                                <Label for="lead_service_interest">Kebutuhan utama</Label>
+                                <select
+                                    id="lead_service_interest"
+                                    v-model="form.service_interest"
+                                    class="h-10 rounded-xl border border-[#dce8f4] bg-white px-4 text-sm text-[#2f334e] outline-none transition focus:border-[#2177b8]"
+                                >
+                                    <option value="Jasa Pembuatan Aplikasi Web">
+                                        Jasa Pembuatan Aplikasi Web
+                                    </option>
+                                    <option value="Website Company Profile">
+                                        Website Company Profile
+                                    </option>
+                                    <option value="Landing Page Promosi">
+                                        Landing Page Promosi
+                                    </option>
+                                    <option value="SEO Lokal Makassar">
+                                        SEO Lokal Makassar
+                                    </option>
+                                </select>
+                                <InputError :message="form.errors.service_interest" />
+                            </div>
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="lead_message">Brief proyek</Label>
+                            <textarea
+                                id="lead_message"
+                                v-model="form.message"
+                                :class="textareaClass"
+                                placeholder="Ceritakan bisnis Anda, fitur yang dibutuhkan, dan target wilayah seperti Makassar."
+                            />
+                            <InputError :message="form.errors.message" />
+                        </div>
+
+                        <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                class="rounded-[14px] border-[#dce8f4] bg-white px-6 py-3 text-[#2f334e]"
+                                @click="isLeadModalOpen = false"
+                            >
+                                Tutup
+                            </Button>
+                            <Button
+                                :disabled="form.processing"
+                                class="h-auto justify-center rounded-[14px] border-[#c97f00] bg-gradient-to-b from-[#eda40f] to-[#d98700] px-6 py-3.5 text-[15px] font-semibold text-white shadow-[inset_0_2px_0_rgba(255,255,255,0.34),0_14px_28px_rgba(214,136,0,0.28)]"
+                                type="submit"
+                            >
+                                <LoaderCircle v-if="form.processing" class="size-4 animate-spin" />
+                                <Send v-else class="size-4" />
+                                Kirim ke CMS
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </DialogContent>
+        </Dialog>
     </section>
 </template>
