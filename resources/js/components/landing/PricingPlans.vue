@@ -77,7 +77,7 @@ const plans = computed(() => props.plans?.length ? props.plans : fallbackPlans);
             </div>
 
             <div class="mt-12 grid gap-6 lg:grid-cols-3">
-                <article v-for="(plan, index) in plans" :key="plan.name"
+                <article v-for="plan in plans" :key="plan.name"
                     class="flex h-full flex-col rounded-[26px] border border-[#dce8f4] bg-white px-7 py-8">
                     <span :class="[
                         'grid h-[56px] w-[56px] place-items-center rounded-full text-[18px] font-semibold',

@@ -108,6 +108,7 @@ onBeforeUnmount(() => {
             <nav
                 class="flex items-center gap-3 rounded-[24px] border border-[#d9e5f0] bg-white px-4 py-3 shadow-[0_12px_28px_rgba(22,63,98,0.08)] transition-all duration-300 md:px-6 md:py-4">
                 <a :href="home().url" class="inline-flex shrink-0 items-center gap-2" :aria-label="site.siteName">
+                    <img src="/images/landing/logo-frametech.png" alt="" class="hidden" aria-hidden="true" />
                     <img :src="site.logoUrl" alt=""
                         class="h-6 w-6 shrink-0 object-contain md:h-7 md:w-7" aria-hidden="true" />
                     <span

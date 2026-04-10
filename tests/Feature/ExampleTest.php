@@ -1,6 +1,16 @@
 <?php
 
+use App\Models\Post;
+
 it('renders marketing pages successfully', function (string $routeName, array $parameters = []) {
+    if ($routeName === 'blog.show') {
+        $post = Post::factory()->published()->create();
+
+        $parameters = [
+            'post' => $post->slug,
+        ];
+    }
+
     $this->get(route($routeName, $parameters))->assertSuccessful();
 })->with([
     'home' => ['home'],
@@ -9,10 +19,5 @@ it('renders marketing pages successfully', function (string $routeName, array $p
     'portfolio' => ['portfolio'],
     'about' => ['about'],
     'blog' => ['blog'],
-    'blog show' => [
-        'blog.show',
-        [
-            'slug' => 'pembuatan-website-umkm-cara-bisnis-lokal-scale-up-dan-perluas-market-di-2026',
-        ],
-    ],
+    'blog show' => ['blog.show'],
 ]);

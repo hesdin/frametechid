@@ -229,6 +229,90 @@ function submit(): void {
                     </Button>
                 </form>
             </div>
+
+            <div
+                aria-hidden="true"
+                class="relative hidden min-h-[520px] lg:flex lg:items-center lg:justify-end"
+            >
+                <div class="relative h-[520px] w-full origin-top-right translate-y-8 scale-[0.86]">
+                    <img
+                        src="/images/landing/cta.png"
+                        alt="Ilustrasi layanan website Frametech"
+                        class="pointer-events-none absolute bottom-[-44px] left-[53%] z-20 w-[460px] -translate-x-1/2 object-contain [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]"
+                    />
+                    <div
+                        class="absolute top-8 left-[-36px] z-10 inline-flex min-w-[380px] items-center gap-4 rounded-[30px] border border-[#dce5ef] bg-[#fcfdff] px-6 py-5 shadow-[0_12px_26px_rgba(38,73,106,0.13)]"
+                    >
+                        <span
+                            :class="[
+                                'grid h-[78px] w-[78px] shrink-0 place-items-center rounded-full',
+                                isBrandTheme
+                                    ? 'bg-gradient-to-b from-[#2a86c9] to-[#1769af]'
+                                    : isRedTheme
+                                      ? 'bg-gradient-to-b from-[#f06f6f] to-[#d44242]'
+                                      : 'bg-gradient-to-b from-[#1cb1fb] to-[#0f8edf]',
+                            ]"
+                        >
+                            <span class="h-6 w-8 rounded-lg border-2 border-white" />
+                        </span>
+                        <div>
+                            <p
+                                :class="[
+                                    'inline-flex items-center gap-2 text-[22px] leading-none font-semibold',
+                                    isBrandTheme
+                                        ? 'text-[#1f79bc]'
+                                        : isRedTheme
+                                          ? 'text-[#d45b5b]'
+                                          : 'text-[#4b92d4]',
+                                ]"
+                            >
+                                12
+                                <span
+                                    class="inline-flex items-center rounded-full bg-[#27ba5d] px-3 py-1 text-[13px] leading-none font-bold text-white"
+                                >
+                                    ▲ 22%
+                                </span>
+                            </p>
+                            <p class="mt-2 text-[16px] leading-tight font-semibold text-[#2b2f45]">
+                                Formulir Kontak Masuk
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="absolute right-2 bottom-[-10px] z-30 inline-flex min-w-[320px] items-center gap-4 rounded-[30px] border border-[#dce5ef] bg-[#fcfdff] px-6 py-5 shadow-[0_12px_26px_rgba(38,73,106,0.13)]"
+                    >
+                        <span
+                            :class="[
+                                'grid h-[78px] w-[78px] shrink-0 place-items-center rounded-full text-[36px] text-white',
+                                isBrandTheme
+                                    ? 'bg-gradient-to-b from-[#2a86c9] to-[#1769af]'
+                                    : isRedTheme
+                                      ? 'bg-gradient-to-b from-[#f06f6f] to-[#d44242]'
+                                      : 'bg-gradient-to-b from-[#1cb1fb] to-[#0f8edf]',
+                            ]"
+                        >
+                            ★
+                        </span>
+                        <div>
+                            <p
+                                :class="[
+                                    'text-[22px] leading-none font-semibold',
+                                    isBrandTheme
+                                        ? 'text-[#1f79bc]'
+                                        : isRedTheme
+                                          ? 'text-[#d45b5b]'
+                                          : 'text-[#4b92d4]',
+                                ]"
+                            >
+                                4.8/5
+                            </p>
+                            <p class="mt-2 text-[16px] leading-tight font-semibold text-[#2b2f45]">
+                                Rating Bisnismu
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </template>
