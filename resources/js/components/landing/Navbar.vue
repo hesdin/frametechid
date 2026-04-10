@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { Menu, MessageCircle, X } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useSiteSettings } from '@/composables/useSiteSettings';
@@ -25,17 +26,25 @@ const isRedTheme = computed(() => props.theme === 'red');
 const isBrandTheme = computed(() => props.theme === 'brand');
 const isMobileMenuOpen = ref(false);
 const { site } = useSiteSettings();
+const heroImageUrls = [
+    '/images/landing/hero-home-page.png',
+    '/images/landing/hero-layanan.png',
+    '/images/landing/hero-paket-harga.png',
+    '/images/landing/hero-portfolio.png',
+    '/images/landing/hero-tentang-kami.png',
+];
 
 const links = computed(() => [
     {
         label: 'Beranda',
         href: props.currentPage === 'home' ? '#hero' : home().url,
+        inertia: props.currentPage !== 'home',
     },
-    { label: 'Layanan', href: services().url },
-    { label: 'Paket & Harga', href: pricing().url },
-    { label: 'Portofolio', href: portfolio().url },
-    { label: 'Tentang Kami', href: about().url },
-    { label: 'Blog', href: blog().url },
+    { label: 'Layanan', href: services().url, inertia: true },
+    { label: 'Paket & Harga', href: pricing().url, inertia: true },
+    { label: 'Portofolio', href: portfolio().url, inertia: true },
+    { label: 'Tentang Kami', href: about().url, inertia: true },
+    { label: 'Blog', href: blog().url, inertia: true },
 ]);
 
 const isScrolled = ref(false);
@@ -84,6 +93,18 @@ onMounted(() => {
     handleResize();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
+
+    if ((window as typeof window & { __frametechHeroPreloaded?: boolean }).__frametechHeroPreloaded) {
+        return;
+    }
+
+    (window as typeof window & { __frametechHeroPreloaded?: boolean }).__frametechHeroPreloaded = true;
+
+    heroImageUrls.forEach((imageUrl) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = imageUrl;
+    });
 });
 
 onBeforeUnmount(() => {
@@ -107,7 +128,12 @@ onBeforeUnmount(() => {
             class="mx-auto w-[min(1280px,calc(100%-1.5rem))] md:w-[min(1280px,calc(100%-2.5rem))] lg:w-[min(1280px,calc(100%-12rem))]">
             <nav
                 class="flex items-center gap-3 rounded-[24px] border border-[#d9e5f0] bg-white px-4 py-3 shadow-[0_12px_28px_rgba(22,63,98,0.08)] transition-all duration-300 md:px-6 md:py-4">
-                <a :href="home().url" class="inline-flex shrink-0 items-center gap-2" :aria-label="site.siteName">
+                <a
+                    v-if="props.currentPage === 'home'"
+                    href="#hero"
+                    class="inline-flex shrink-0 items-center gap-2"
+                    :aria-label="site.siteName"
+                >
                     <img src="/images/landing/logo-frametech.png" alt="" class="hidden" aria-hidden="true" />
                     <img :src="site.logoUrl" alt=""
                         class="h-6 w-6 shrink-0 object-contain md:h-7 md:w-7" aria-hidden="true" />
@@ -116,11 +142,34 @@ onBeforeUnmount(() => {
                         {{ site.siteName }}
                     </span>
                 </a>
+                <Link
+                    v-else
+                    :href="home().url"
+                    prefetch
+                    class="inline-flex shrink-0 items-center gap-2"
+                    :aria-label="site.siteName"
+                >
+                    <img src="/images/landing/logo-frametech.png" alt="" class="hidden" aria-hidden="true" />
+                    <img :src="site.logoUrl" alt=""
+                        class="h-6 w-6 shrink-0 object-contain md:h-7 md:w-7" aria-hidden="true" />
+                    <span
+                        class="text-[20px] leading-none font-semibold tracking-[-0.01em] text-[#27324a] md:text-[28px]">
+                        {{ site.siteName }}
+                    </span>
+                </Link>
 
                 <ul
                     class="mx-1 hidden flex-1 items-center justify-center gap-6 text-[15px] font-medium whitespace-nowrap text-[#75809a] xl:flex xl:gap-8 xl:text-[16px]">
                     <li v-for="link in links" :key="link.label">
-                        <a :href="link.href" :class="['transition-colors', linkHoverClass]">
+                        <Link
+                            v-if="link.inertia"
+                            :href="link.href"
+                            prefetch
+                            :class="['transition-colors', linkHoverClass]"
+                        >
+                            {{ link.label }}
+                        </Link>
+                        <a v-else :href="link.href" :class="['transition-colors', linkHoverClass]">
                             {{ link.label }}
                         </a>
                     </li>
@@ -147,7 +196,19 @@ onBeforeUnmount(() => {
                 class="mt-3 rounded-[24px] border border-[#d3e0ed] bg-white/95 p-4 shadow-[0_18px_32px_rgba(22,63,98,0.08)] xl:hidden">
                 <ul class="space-y-2 text-[15px] font-medium text-[#75809a]">
                     <li v-for="link in links" :key="`${link.label}-mobile`">
-                        <a :href="link.href" :class="[
+                        <Link
+                            v-if="link.inertia"
+                            :href="link.href"
+                            prefetch
+                            :class="[
+                                'flex items-center rounded-[14px] px-4 py-3 transition-colors',
+                                linkHoverClass,
+                            ]"
+                            @click="closeMobileMenu"
+                        >
+                            {{ link.label }}
+                        </Link>
+                        <a v-else :href="link.href" :class="[
                             'flex items-center rounded-[14px] px-4 py-3 transition-colors',
                             linkHoverClass,
                         ]" @click="closeMobileMenu">

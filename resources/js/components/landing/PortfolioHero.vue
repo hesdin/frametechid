@@ -74,6 +74,9 @@ import {
                 <img
                     src="/images/landing/hero-portfolio.png"
                     alt="Contoh tampilan website portofolio yang dibuat Frametech"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
                     class="pointer-events-none absolute bottom-[-36px] left-1/2 z-[3] w-[min(420px,84%)] -translate-x-1/2 object-contain [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] sm:bottom-[-44px] sm:w-[min(470px,82%)]"
                 />
 

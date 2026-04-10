@@ -71,6 +71,9 @@ import {
                 <img
                     src="/images/landing/hero-home-page.png"
                     alt="Tim Frametech membantu bisnis lokal tampil profesional secara digital"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
                     class="pointer-events-none absolute right-[2%] bottom-[-44px] z-[4] w-[min(380px,80%)] object-contain [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] sm:right-[4%] sm:bottom-[-52px] sm:w-[min(450px,76%)] lg:right-[2%] lg:bottom-[-64px] lg:w-[min(520px,82%)]"
                 />
 

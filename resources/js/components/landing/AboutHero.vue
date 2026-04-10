@@ -45,6 +45,9 @@ import { BriefcaseBusiness, Lightbulb, Rocket } from 'lucide-vue-next';
                 <img
                     src="/images/landing/hero-tentang-kami.png"
                     alt="Tampilan halaman tentang kami Frametech"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
                     class="pointer-events-none absolute bottom-[-36px] left-1/2 z-[3] w-[112%] max-w-[980px] -translate-x-1/2 object-contain [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)] sm:bottom-[-44px] sm:w-[118%] lg:bottom-[-56px] lg:w-[124%]"
                 />
 
