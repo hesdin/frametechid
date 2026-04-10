@@ -86,6 +86,8 @@ class SiteSetting extends Model
      */
     public function publicData(): array
     {
+        $assetVersion = $this->assetVersion();
+
         return [
             'siteName' => $this->site_name,
             'companyDescription' => $this->company_description,
@@ -109,8 +111,9 @@ class SiteSetting extends Model
             'seoLocality' => $this->seo_locality,
             'seoRegion' => $this->seo_region,
             'seoFocusKeyword' => $this->seo_focus_keyword,
-            'logoUrl' => route('site-assets.show', ['asset' => 'logo', 'v' => $this->updated_at?->timestamp]),
-            'faviconUrl' => route('site-assets.show', ['asset' => 'favicon', 'v' => $this->updated_at?->timestamp]),
+            'logoUrl' => route('site-assets.show', ['asset' => 'logo', 'v' => $assetVersion]),
+            'faviconUrl' => route('site-assets.show', ['asset' => 'favicon', 'v' => $assetVersion]),
+            'faviconMime' => $this->faviconMime(),
         ];
     }
 
@@ -199,5 +202,26 @@ class SiteSetting extends Model
                 $this->youtube_url,
             ])->filter()->values()->all(),
         ];
+    }
+
+    private function assetVersion(): string
+    {
+        $updatedAt = $this->updated_at?->format('Uu') ?? '0';
+
+        return hash('xxh128', implode('|', [
+            $updatedAt,
+            $this->logo_path ?? 'no-logo',
+            $this->favicon_path ?? 'no-favicon',
+        ]));
+    }
+
+    private function faviconMime(): string
+    {
+        return match (strtolower(pathinfo((string) $this->favicon_path, PATHINFO_EXTENSION))) {
+            'svg' => 'image/svg+xml',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+            default => 'image/x-icon',
+        };
     }
 }

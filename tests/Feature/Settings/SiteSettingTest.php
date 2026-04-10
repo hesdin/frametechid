@@ -69,6 +69,7 @@ test('authenticated users can update site settings and branding assets', functio
     $this->get(route('home'))
         ->assertSuccessful()
         ->assertSee(route('site-assets.show', ['asset' => 'favicon']))
+        ->assertSee('rel="shortcut icon"', false)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Landing')
             ->where('site.siteName', 'Acme Studio')
@@ -81,4 +82,15 @@ test('authenticated users can update site settings and branding assets', functio
 
     $this->get(route('site-assets.show', ['asset' => 'favicon']))
         ->assertSuccessful();
+});
+
+test('favicon asset fallback is served directly without redirect cache artifacts', function () {
+    $response = $this->get(route('site-assets.show', ['asset' => 'favicon']));
+
+    $response->assertSuccessful();
+    expect((string) $response->headers->get('Cache-Control'))
+        ->toContain('no-store')
+        ->toContain('no-cache')
+        ->toContain('must-revalidate');
+    expect($response->headers->get('Location'))->toBeNull();
 });

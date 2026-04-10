@@ -16,8 +16,10 @@ use App\Http\Controllers\LeadCaptureController;
 use App\Http\Controllers\PortfolioPageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PricingPageController;
+use App\Http\Controllers\RobotsTxtController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\SiteAssetController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -28,6 +30,8 @@ Route::inertia('/tentang-kami', 'About')->name('about');
 Route::get('/blog', [PostController::class, 'index'])->name('blog');
 Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('blog.show');
 Route::post('/contact/leads', LeadCaptureController::class)->name('leads.capture');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', RobotsTxtController::class)->name('robots');
 Route::get('/site-assets/{asset}', SiteAssetController::class)
     ->whereIn('asset', ['logo', 'favicon'])
     ->name('site-assets.show');
