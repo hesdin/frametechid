@@ -36,6 +36,7 @@ Route::middleware(TrackUniqueVisitor::class)->group(function () {
 Route::post('/contact/leads', LeadCaptureController::class)->name('leads.capture');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/robots.txt', RobotsTxtController::class)->name('robots');
+Route::get('/favicon.ico', [SiteAssetController::class, 'favicon'])->name('favicon');
 Route::get('/site-assets/{asset}', SiteAssetController::class)
     ->whereIn('asset', ['logo', 'favicon'])
     ->name('site-assets.show');

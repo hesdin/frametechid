@@ -124,7 +124,7 @@ class SiteSetting extends Model
             'seoRegion' => $this->seo_region,
             'seoFocusKeyword' => $this->seo_focus_keyword,
             'logoUrl' => route('site-assets.show', ['asset' => 'logo', 'v' => $assetVersion]),
-            'faviconUrl' => route('site-assets.show', ['asset' => 'favicon', 'v' => $assetVersion]),
+            'faviconUrl' => route('favicon', ['v' => $assetVersion]),
             'businessTypesSlides' => $this->businessTypesSlides(),
             'faviconMime' => $this->faviconMime(),
         ];

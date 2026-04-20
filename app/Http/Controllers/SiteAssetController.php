@@ -9,7 +9,17 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SiteAssetController extends Controller
 {
+    public function favicon(): Response|StreamedResponse
+    {
+        return $this->serve('favicon');
+    }
+
     public function __invoke(string $asset): Response|StreamedResponse
+    {
+        return $this->serve($asset);
+    }
+
+    private function serve(string $asset): Response|StreamedResponse
     {
         $siteSetting = SiteSetting::current();
 

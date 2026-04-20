@@ -46,8 +46,8 @@
         <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
         <meta name="twitter:image" content="{{ $seo['ogImage'] ?? ($siteSettings['logoUrl'] ?? '') }}">
 
-        <link rel="icon" href="{{ $siteSettings['faviconUrl'] ?? asset('favicon.ico') }}" type="{{ $siteSettings['faviconMime'] ?? 'image/x-icon' }}" sizes="any">
-        <link rel="shortcut icon" href="{{ $siteSettings['faviconUrl'] ?? asset('favicon.ico') }}">
+        <link rel="icon" href="{{ $siteSettings['faviconUrl'] ?? route('favicon') }}" type="{{ $siteSettings['faviconMime'] ?? 'image/x-icon' }}" sizes="any">
+        <link rel="shortcut icon" href="{{ $siteSettings['faviconUrl'] ?? route('favicon') }}">
         <link rel="apple-touch-icon" href="{{ $siteSettings['faviconUrl'] ?? asset('apple-touch-icon.png') }}">
 
         <link rel="preconnect" href="https://fonts.bunny.net">

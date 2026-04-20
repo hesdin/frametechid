@@ -81,7 +81,7 @@ test('authenticated users can update site settings and branding assets', functio
 
     $this->get(route('home'))
         ->assertSuccessful()
-        ->assertSee(route('site-assets.show', ['asset' => 'favicon']))
+        ->assertSee(route('favicon'))
         ->assertSee('rel="shortcut icon"', false)
         ->assertInertia(fn (Assert $page) => $page
             ->component('Landing')
@@ -97,10 +97,17 @@ test('authenticated users can update site settings and branding assets', functio
 
     $this->get(route('site-assets.show', ['asset' => 'favicon']))
         ->assertSuccessful();
+
+    $faviconResponse = $this->get(route('favicon'));
+
+    $faviconResponse->assertSuccessful();
+    expect($faviconResponse->headers->get('Content-Type'))->toContain('image/png');
+    expect(realpath($faviconResponse->baseResponse->getFile()->getPathname()))
+        ->toBe(realpath(Storage::disk('public')->path($siteSetting->favicon_path)));
 });
 
-test('favicon asset fallback is served directly without redirect cache artifacts', function () {
-    $response = $this->get(route('site-assets.show', ['asset' => 'favicon']));
+test('root favicon route serves dynamic asset without redirect cache artifacts', function () {
+    $response = $this->get(route('favicon'));
 
     $response->assertSuccessful();
     expect((string) $response->headers->get('Cache-Control'))
